@@ -51,14 +51,17 @@
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       
       <!-- Logo koła w czcionce Gochi Hand (zgodnie z repozytorium website_BC) -->
-      <div class="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start text-center sm:text-left">
+      <div class="flex items-center gap-3.5 w-full sm:w-auto justify-center sm:justify-start text-center sm:text-left">
+        <a href="https://github.com/biologiacyfrowa" target="_blank" rel="noopener noreferrer" class="shrink-0 group block" title="SKN Biologów Cyfrowych UŁ">
+          <img src="assets/img/logo_bc_icon.jpg" alt="Logo SKN Biologów Cyfrowych" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl shadow-md border-2 border-[#DFEFF6]/30 group-hover:border-[#C4455C] group-hover:scale-105 transition-all object-cover">
+        </a>
         <div>
           <div class="bc-logo font-gochi leading-none text-2xl sm:text-3xl text-[#DFEFF6] hover:text-[#C4455C] transition-colors cursor-pointer" id="logo-home">
             skn biologów cyfrowych
           </div>
           <p class="text-[11px] text-[#DFEFF6]/80 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5 font-sans">
             <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-            Uniwersytet Łódzki • Symulator Bioprocesu CHO & Optymalizacja
+            Koło Naukowe Uniwersytetu Łódzkiego
           </p>
         </div>
       </div>
@@ -124,25 +127,25 @@
             <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
               Dlaczego komórki chomika chińskiego (CHO) i dlaczego próby laboratoryjne tyle kosztują?
             </h3>
-            <p class="text-xs text-[#DFEFF6]/70">Standard światowej biofarmacji oraz ekonomia badań bioprocesowych</p>
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/80">Standard światowej biofarmacji oraz ekonomia badań bioprocesowych</p>
           </div>
         </div>
-        <button id="btn-toggle-cho-info" class="text-xs px-3.5 py-2 rounded-xl bg-[#1B1D3A] hover:bg-[#4043A0] text-[#DFEFF6] border border-[#4043A0] transition flex items-center gap-2 shrink-0 font-semibold">
+        <button id="btn-toggle-cho-info" class="text-xs sm:text-sm px-4 py-2.5 rounded-xl bg-[#1B1D3A] hover:bg-[#4043A0] text-[#DFEFF6] border border-[#4043A0] transition flex items-center gap-2 shrink-0 font-semibold shadow-sm">
           <i data-lucide="book-open" class="w-4 h-4 text-cyan-300"></i>
           <span id="txt-toggle-cho-info">Rozwiń wiedzę bioinżynierską</span>
         </button>
       </div>
 
       <!-- Treść rozwijana -->
-      <div id="cho-info-content" class="hidden pt-3 border-t border-[#4043A0]/60 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#DFEFF6]/90 leading-relaxed">
+      <div id="cho-info-content" class="hidden pt-4 border-t border-[#4043A0]/60 grid grid-cols-1 md:grid-cols-2 gap-5 text-sm sm:text-base text-[#DFEFF6]/90 leading-relaxed">
         
         <!-- Kolumna 1: Dlaczego komórki CHO? -->
-        <div class="bg-[#1B1D3A]/80 p-4 rounded-xl border border-[#4043A0] space-y-2.5">
-          <h4 class="font-bold text-cyan-300 flex items-center gap-2 text-xs uppercase tracking-wider">
+        <div class="bg-[#1B1D3A]/80 p-5 rounded-xl border border-[#4043A0] space-y-3">
+          <h4 class="font-bold text-cyan-300 flex items-center gap-2 text-sm sm:text-base uppercase tracking-wider">
             <i data-lucide="dna" class="w-4 h-4 text-[#C4455C]"></i>
             1. Dlaczego komórki CHO (Chinese Hamster Ovary)?
           </h4>
-          <ul class="space-y-2 text-[#DFEFF6]/80 list-disc list-inside">
+          <ul class="space-y-2.5 text-[#DFEFF6]/85 list-disc list-inside text-sm sm:text-base leading-relaxed">
             <li><strong>Złoty standard biofarmacji:</strong> Aż <strong>ponad 70–80% wszystkich leków biologicznych</strong> na świecie (w tym przeciwciała monoklonalne mAbs przeciw nowotworom i chorobom autoimmunologicznym, enzymy czy erytropoetyna) jest wytwarzanych w liniach komórkowych CHO.</li>
             <li><strong>Ludzkopodobna glikozylacja:</strong> Jako komórki ssacze, CHO potrafią przeprowadzać kluczowe <em>modyfikacje potranslacyjne</em> (przede wszystkim dołączanie odpowiednich łańcuchów cukrowych). Dzięki temu wyprodukowane leki białkowe nie są odrzucane przez układ odpornościowy pacjenta i nie wywołują wstrząsu anafilaktycznego.</li>
             <li><strong>Hodowla w zawiesinie:</strong> Komórki CHO zostały zaadaptowane do wzrostu w zawiesinie w wielkich bioreaktorach (od 5 litrów do 20 000 litrów), bez konieczności przyczepiania się do powierzchni naczyń (adhezji).</li>
@@ -151,12 +154,12 @@
         </div>
 
         <!-- Kolumna 2: Skąd biorą się koszty? -->
-        <div class="bg-[#1B1D3A]/80 p-4 rounded-xl border border-[#4043A0] space-y-2.5">
-          <h4 class="font-bold text-amber-300 flex items-center gap-2 text-xs uppercase tracking-wider">
+        <div class="bg-[#1B1D3A]/80 p-5 rounded-xl border border-[#4043A0] space-y-3">
+          <h4 class="font-bold text-amber-300 flex items-center gap-2 text-sm sm:text-base uppercase tracking-wider">
             <i data-lucide="coins" class="w-4 h-4 text-[#C4455C]"></i>
             2. Skąd bierze się koszt każdej próby (180 PLN mikro / tysiące PLN pilot)?
           </h4>
-          <ul class="space-y-2 text-[#DFEFF6]/80 list-disc list-inside">
+          <ul class="space-y-2.5 text-[#DFEFF6]/85 list-disc list-inside text-sm sm:text-base leading-relaxed">
             <li><strong>Czyste chemicznie pożywki bezsurowicze (CD CHO):</strong> Pożywki hodowlane klasy farmaceutycznej z syntetycznymi czynnikami wzrostu, aminokwasami i witaminami kosztują od kilkuset do ponad 1 500 PLN za litr.</li>
             <li><strong>Jednorazowy sprzęt sterylny:</strong> Każda próba wymaga sterylnych filtrów membranowych 0.22 µm, naczynia bioreaktorowego, certyfikowanych pipet, sterylnego błękitu trypanu i komór liczących Bürkera.</li>
             <li><strong>Infrastruktura inkubatorów CO₂:</strong> Inkubacja wymaga stałego utrzymania 37.0°C, atmosfery 5% CO₂, ciągłego wytrząsania orbitalnego i filtracji HEPA przez 3.5 do 7 dni bez przerwy.</li>
@@ -315,7 +318,7 @@
             </div>
           </div>
 
-          <p id="res-description" class="text-xs text-[#DFEFF6]/90 bg-[#1B1D3A]/90 p-3 rounded-lg border border-[#4043A0] leading-relaxed">
+          <p id="res-description" class="text-sm sm:text-base text-[#DFEFF6]/90 bg-[#1B1D3A]/90 p-3.5 rounded-xl border border-[#4043A0] leading-relaxed shadow-inner">
             Dopasuj parametry i kliknij <strong>Zainkubuj Próbkę</strong>, a następnie zbadaj żywotność błękitem trypanu.
           </p>
         </div>
@@ -328,11 +331,11 @@
     <div class="glass-panel p-5 sm:p-6 space-y-4">
       <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h3 class="text-base font-bold text-white flex items-center gap-2">
+          <h3 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
             <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-400"></i>
             Dziennik Prób Laboratoryjnych
           </h3>
-          <p class="text-xs text-[#DFEFF6]/70 mt-0.5">Każda próba manualna to koszt ok. 180 PLN i 3.5 dnia oczekiwania na wyniki hodowli.</p>
+          <p class="text-xs sm:text-sm text-[#DFEFF6]/80 mt-0.5">Każda próba manualna to koszt ok. 180 PLN i 3.5 dnia oczekiwania na wyniki hodowli.</p>
         </div>
 
         <!-- PRZYCISK PRZEJŚCIA W BARWACH KOŁA (btn-coral) -->
@@ -434,32 +437,32 @@
         <h3 class="text-xl font-bold text-white">
           Krok 2: Wpływ każdego parametru z osobna
         </h3>
-        <p class="text-xs sm:text-sm text-[#DFEFF6]/80 mt-1 max-w-3xl leading-relaxed">
+        <p class="text-sm sm:text-base text-[#DFEFF6]/90 mt-1.5 max-w-3xl leading-relaxed">
           Poniżej znajdują się klasyczne wykresy statystyczne odpowiedzi komórek CHO na poszczególne parametry. 
           Pomarańczowe punkty <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#ea580c] mx-1 border border-white"></span> to <strong>Twoje dotychczasowe próby manualne</strong>!
         </p>
       </div>
 
       <!-- NOTA NAUKOWA: SKĄD MAMY DANE I STĘŻENIE GLUKOZY (WIEDZA A PRIORI) -->
-      <div class="p-4 bg-[#1B1D3A]/90 rounded-2xl border border-[#4043A0] flex flex-col sm:flex-row items-start gap-3.5 shadow-inner">
-        <div class="w-9 h-9 rounded-xl bg-[#4043A0] text-cyan-300 flex items-center justify-center shrink-0 mt-0.5 shadow">
+      <div class="p-5 bg-[#1B1D3A]/90 rounded-2xl border border-[#4043A0] flex flex-col sm:flex-row items-start gap-4 shadow-inner">
+        <div class="w-10 h-10 rounded-xl bg-[#4043A0] text-cyan-300 flex items-center justify-center shrink-0 mt-0.5 shadow">
           <i data-lucide="book-open" class="w-5 h-5 text-[#C4455C]"></i>
         </div>
-        <div class="space-y-1.5 text-xs text-[#DFEFF6]/90 leading-relaxed">
-          <div class="flex flex-wrap items-center gap-2">
-            <span class="text-white font-bold text-sm">Skąd mamy dane na wykresach i skąd znamy stężenie glukozy?</span>
-            <span class="badge-tech bg-[#4043A0] text-cyan-300 border border-[#4043A0] text-[10px]">Wiedza a priori z literatury</span>
+        <div class="space-y-2.5 text-sm sm:text-base text-[#DFEFF6]/90 leading-relaxed">
+          <div class="flex flex-wrap items-center gap-2.5">
+            <span class="text-white font-bold text-base sm:text-lg">Skąd mamy dane na wykresach i skąd znamy stężenie glukozy?</span>
+            <span class="badge-tech bg-[#4043A0] text-cyan-300 border border-[#4043A0] text-xs">Wiedza a priori z literatury</span>
           </div>
           <p>
             W biologii cyfrowej i optymalizacji bioprocesów rzadko zaczynamy od zera. Kształt tych krzywych to <strong>wiedza a priori</strong> (wiedza wstępna) pozyskana z publikacji bioprocesowych, biofizyki enzymów oraz konsultacji z biologami doświadczalnymi:
           </p>
-          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-[11px] text-[#DFEFF6]/80">
-            <div class="bg-[#14162e] p-2.5 rounded-lg border border-[#4043A0]/60">
-              <strong class="text-emerald-300 block mb-0.5">Glukoza w pożywce (skąd zakres 0–10 g/L i optimum 4.5 g/L?):</strong>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-4 pt-2 text-xs sm:text-sm text-[#DFEFF6]/90 leading-relaxed">
+            <div class="bg-[#14162e] p-3.5 rounded-xl border border-[#4043A0]/60 space-y-1">
+              <strong class="text-emerald-300 block mb-1 text-sm font-bold">Glukoza w pożywce (skąd zakres 0–10 g/L i optimum 4.5 g/L?):</strong>
               Glukoza to podstawowe paliwo komórek CHO. Poniżej 1.0 g/L zachodzi śmierć głodowa (kinetyka Monoda, stała \(K_s \approx 0.5\text{ g/L}\)). Jednak powyżej 6.0 g/L pojawia się tzw. <em>efekt Crabtree</em> – komórki wytwarzają nadmiar toksycznego mleczanu (kwasu mlekowego) i wzrasta osmolalność. Literatura biotechnologiczna jednoznacznie wskazuje punkt równowagi wokół <strong>4.0 – 4.5 g/L</strong>.
             </div>
-            <div class="bg-[#14162e] p-2.5 rounded-lg border border-[#4043A0]/60">
-              <strong class="text-orange-300 block mb-0.5">Temperatura (37.0°C) i pH (7.20):</strong>
+            <div class="bg-[#14162e] p-3.5 rounded-xl border border-[#4043A0]/60 space-y-1">
+              <strong class="text-orange-300 block mb-1 text-sm font-bold">Temperatura (37.0°C) i pH (7.20):</strong>
               Wynikają bezpośrednio z termodynamiki białek ssaczych. Powyżej 39°C dochodzi do szybkiej denaturacji enzymów oddechowych (stąd asymetryczny spadek), a wąskie okno pH (7.0 – 7.4) jest wymuszone przez fizjologiczny bufor wodorowęglanowy krwi i cytoplazmy ssaków.
             </div>
           </div>
@@ -483,7 +486,7 @@
             <canvas id="plot-2d-temp" class="w-full h-48 block"></canvas>
           </div>
 
-          <p class="text-[11px] text-[#DFEFF6]/80 leading-relaxed">
+          <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
             <strong>Asymetria termiczna:</strong> Poniżej 32°C metabolizm gwałtownie zwalnia. Powyżej 39°C następuje szybka denaturacja białek i szok cieplny.
           </p>
         </div>
@@ -502,7 +505,7 @@
             <canvas id="plot-2d-ph" class="w-full h-48 block"></canvas>
           </div>
 
-          <p class="text-[11px] text-[#DFEFF6]/80 leading-relaxed">
+          <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
             <strong>Wąskie okno fizjologiczne:</strong> Kwasica (&lt;6.8) blokuje enzymy. Zasadowość (&gt;7.8) powoduje rozpad lipidów błony komórkowej.
           </p>
         </div>
@@ -521,7 +524,7 @@
             <canvas id="plot-2d-glucose" class="w-full h-48 block"></canvas>
           </div>
 
-          <p class="text-[11px] text-[#DFEFF6]/80 leading-relaxed">
+          <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
             <strong>Kinetyka Monoda:</strong> Brak glukozy to śmierć głodowa. Nadmiar (&gt;7 g/L) wywołuje stres osmotyczny i toksyczny kwas mlekowy.
           </p>
         </div>
@@ -543,16 +546,16 @@
 
       <!-- METAFORA WSPINACZKI -->
       <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
-        <div class="space-y-3 text-xs sm:text-sm text-[#DFEFF6]/90 leading-relaxed">
+        <div class="space-y-3.5 text-sm sm:text-base text-[#DFEFF6]/90 leading-relaxed">
           <p>
             W realnym bioreaktorze parametry <strong>wpływają na siebie jednocześnie</strong> (np. wyższa temperatura przyspiesza zużycie glukozy i zakwasza pożywkę). Tworzy to wielowymiarowy „krajobraz górzysty”.
           </p>
-          <div class="p-3.5 bg-[#1B1D3A] rounded-xl border border-[#4043A0] space-y-1.5 shadow-inner">
-            <strong class="text-white flex items-center gap-1.5 font-sans">
+          <div class="p-4 bg-[#1B1D3A] rounded-xl border border-[#4043A0] space-y-2 shadow-inner">
+            <strong class="text-white flex items-center gap-2 font-sans text-sm sm:text-base">
               <i data-lucide="mountain" class="w-4 h-4 text-[#C4455C]"></i>
               Metafora: Wspinaczka we mgle
             </strong>
-            <p class="text-xs text-[#DFEFF6]/70">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/80 leading-relaxed">
               Wyobraź sobie, że stoisz w gęstej mgle na zboczu góry. Nie widzisz, gdzie jest szczyt. Co robisz?
               Badasz stopą nachylenie podłoża w każdym kierunku. 
               <strong>Gradient \(\nabla f\) to kompas wskazujący kierunek najbardziej stromego podejścia pod górę!</strong>
@@ -562,13 +565,13 @@
 
         <!-- FORMULA GRADIENTU W KATEX -->
         <div class="bg-[#1B1D3A] p-5 rounded-2xl border border-[#4043A0] space-y-3 text-center shadow-inner">
-          <span class="text-xs font-mono text-cyan-300 uppercase tracking-wider block">Wzór aktualizacji parametrów:</span>
+          <span class="text-xs sm:text-sm font-mono text-cyan-300 uppercase tracking-wider block">Wzór aktualizacji parametrów:</span>
           <div class="text-base sm:text-xl font-mono text-white py-1">
             $$\mathbf{x}_{k+1} = \mathbf{x}_k + \gamma \cdot \nabla f(\mathbf{x}_k)$$
           </div>
-          <div class="text-[11px] text-[#DFEFF6]/70 text-left space-y-1 bg-[#282C55]/60 p-2.5 rounded-lg font-mono">
-            <div>&bull; <span class="text-cyan-300">\(\mathbf{x}_k = [T, \text{pH}, G]\)</span>: aktualne nastawy bioreaktora</div>
-            <div>&bull; <span class="text-emerald-400">\(\nabla f = [\frac{\partial f}{\partial T}, \frac{\partial f}{\partial \text{pH}}, \frac{\partial f}{\partial G}]\)</span>: wektor gradientu</div>
+          <div class="text-xs sm:text-sm text-[#DFEFF6]/80 text-left space-y-1.5 bg-[#282C55]/60 p-3 rounded-xl font-mono">
+            <div>&bull; <span class="text-cyan-300 font-semibold">\(\mathbf{x}_k = [T, \text{pH}, G]\)</span>: aktualne nastawy bioreaktora</div>
+            <div>&bull; <span class="text-emerald-400 font-semibold">\(\nabla f = [\frac{\partial f}{\partial T}, \frac{\partial f}{\partial \text{pH}}, \frac{\partial f}{\partial G}]\)</span>: wektor gradientu</div>
             <div>&bull; <span class="text-[#C4455C] font-bold">\(\gamma\)</span>: współczynnik kroku (ang. <em>learning rate</em>)</div>
           </div>
         </div>
@@ -582,16 +585,16 @@
               <i data-lucide="binary" class="w-5 h-5 text-emerald-400"></i>
               Dokładna Postać Matematyczna Funkcji Celu \(f(T, \text{pH}, G)\)
             </h4>
-            <p class="text-xs text-[#DFEFF6]/70 mt-0.5">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/80 mt-0.5">
               Analityczny model kinetyczno-termodynamiczny opisujący odpowiedź komórek CHO na parametry hodowli
             </p>
           </div>
-          <span class="badge-tech bg-[#4043A0] text-cyan-300 border border-[#4043A0] font-mono text-[11px] self-start sm:self-center">
+          <span class="badge-tech bg-[#4043A0] text-cyan-300 border border-[#4043A0] font-mono text-xs self-start sm:self-center">
             KaTeX Analytical Model
           </span>
         </div>
 
-        <p class="text-xs text-[#DFEFF6]/90 leading-relaxed">
+        <p class="text-sm sm:text-base text-[#DFEFF6]/95 leading-relaxed">
           Całkowita żywotność komórek CHO \(f(T, \text{pH}, G)\) jest iloczynem maksymalnej biologicznej przeżywalności w optymalnych warunkach (\(98.2\%\)) oraz trzech niezależnych składowych środowiskowych:
         </p>
 
@@ -601,17 +604,17 @@
         </div>
 
         <!-- 3 Składowe analityczne -->
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
           <!-- 1. Czynnik termiczny -->
-          <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] space-y-2">
-            <span class="text-orange-400 font-bold block flex items-center gap-1.5">
-              <i data-lucide="thermometer" class="w-3.5 h-3.5"></i>
+          <div class="bg-[#1B1D3A] p-4 rounded-xl border border-[#4043A0] space-y-2.5">
+            <span class="text-orange-400 font-bold block flex items-center gap-1.5 text-sm">
+              <i data-lucide="thermometer" class="w-4 h-4"></i>
               1. Czynnik termiczny \(f_T(T)\)
             </span>
-            <div class="text-[11px] text-[#DFEFF6] py-1 font-mono text-center bg-[#14162e] rounded p-2">
+            <div class="text-xs text-[#DFEFF6] py-1.5 font-mono text-center bg-[#14162e] rounded p-2">
               $$f_T(T) = \exp\left( -\frac{(T - 37.0)^2}{2\sigma_T^2} \right)$$
             </div>
-            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
               <strong>Asymetria termiczna:</strong><br>
               &bull; \(\sigma_T = 6.0\) dla \(T \le 37.0^\circ\text{C}\) (spowolnienie metaboliczne w hipotermii)<br>
               &bull; \(\sigma_T = 2.4\) dla \(T > 37.0^\circ\text{C}\) (gwałtowna denaturacja białek i szok cieplny).
@@ -619,49 +622,63 @@
           </div>
 
           <!-- 2. Czynnik pH -->
-          <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] space-y-2">
-            <span class="text-purple-300 font-bold block flex items-center gap-1.5">
-              <i data-lucide="beaker" class="w-3.5 h-3.5"></i>
+          <div class="bg-[#1B1D3A] p-4 rounded-xl border border-[#4043A0] space-y-2.5">
+            <span class="text-purple-300 font-bold block flex items-center gap-1.5 text-sm">
+              <i data-lucide="beaker" class="w-4 h-4"></i>
               2. Czynnik kwasowości \(f_{\text{pH}}(\text{pH})\)
             </span>
-            <div class="text-[11px] text-[#DFEFF6] py-1 font-mono text-center bg-[#14162e] rounded p-2">
+            <div class="text-xs text-[#DFEFF6] py-1.5 font-mono text-center bg-[#14162e] rounded p-2">
               $$f_{\text{pH}}(\text{pH}) = \exp\left( -\frac{(\text{pH} - 7.20)^2}{2 \cdot 0.55^2} \right)$$
             </div>
-            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
               <strong>Wąskie okno fizjologiczne:</strong><br>
               Rozkład Gaussa z odchyleniem \(\sigma_{\text{pH}} = 0.55\). Maksymalna aktywność enzymów i stabilność lipidów błony komórkowej przypada na \(\text{pH} = 7.20\).
             </p>
           </div>
 
           <!-- 3. Czynnik glukozy -->
-          <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] space-y-2">
-            <span class="text-emerald-400 font-bold block flex items-center gap-1.5">
-              <i data-lucide="candy" class="w-3.5 h-3.5"></i>
+          <div class="bg-[#1B1D3A] p-4 rounded-xl border border-[#4043A0] space-y-2.5">
+            <span class="text-emerald-400 font-bold block flex items-center gap-1.5 text-sm">
+              <i data-lucide="candy" class="w-4 h-4"></i>
               3. Czynnik glukozy \(f_G(G)\)
             </span>
-            <div class="text-[10px] text-[#DFEFF6] py-1 font-mono text-center bg-[#14162e] rounded p-1.5 overflow-x-auto">
+            <div class="text-[11px] text-[#DFEFF6] py-1.5 font-mono text-center bg-[#14162e] rounded p-2 overflow-x-auto">
               $$f_G(G) = \begin{cases} \frac{G / (G + 0.5)}{4.5 / (4.5 + 0.5)} & G \le 4.5 \\ \frac{1}{1 + 0.12(G - 4.5)^{1.6}} & G > 4.5 \end{cases}$$
             </div>
-            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
               <strong>Kinetyka Monoda & inhibicja:</strong><br>
               Nasycenie enzymatyczne substratem do \(4.5\text{ g/L}\). Powyżej – nieliniowe hamowanie wzrostu przez toksyczny mleczan i hiperosmolalność pożywki.
             </p>
           </div>
         </div>
 
+        <!-- UWAGA O UPROSZCZENIU MODELU: BRAK BEZPOŚREDNICH SPRZĘŻEŃ SKROŚNYCH -->
+        <div class="p-4 sm:p-5 bg-[#1B1D3A] rounded-2xl border border-amber-500/40 text-sm text-[#DFEFF6]/90 space-y-2.5">
+          <div class="flex items-center gap-2 text-amber-300 font-bold text-sm sm:text-base">
+            <i data-lucide="info" class="w-5 h-5 text-amber-400 shrink-0"></i>
+            <span>Założenie inżynieryjne: Uproszczenie wzajemnych sprzężeń między parametrami</span>
+          </div>
+          <p class="text-xs sm:text-sm text-[#DFEFF6]/90 leading-relaxed">
+            W żywej komórce ssaczej parametry wykazują <em>wzajemne dynamiczne sprzężenia</em> (np. podwyższona temperatura przyspiesza metabolizm komórki, co skutkuje szybszym zużyciem glukozy i wzmożoną produkcją kwasu mlekowego, który wtórnie zakwasza pożywkę i obniża pH). W niniejszym symulatorze zastosowano <strong>model multiplikatywny</strong> bez nieliniowych sprzężeń skrośnych wyższego rzędu (\(T \times \text{pH} \times G\)).
+          </p>
+          <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
+            Jest to <strong>celowe uproszczenie inżynieryjne</strong> (standard w metodyce <em>Response Surface Methodology – RSM</em>), które pozwala na intuicyjną demonstrację wspinaczki gradientowej i wyznaczanie pochodnych cząstkowych bez wprowadzania niepotrzebnej komplikacji w postaci układów nieliniowych równań różniczkowych kinetyki (ODE). W realnym bioreaktorze przemysłowym taką izolację parametrów zapewnia automatyka procesowa (kontrolery PID dozujące bufor zasadowy NaOH oraz tlen).
+          </p>
+        </div>
+
         <!-- Jak liczony jest gradient -->
-        <div class="p-3.5 bg-[#1B1D3A] rounded-xl border border-[#4043A0] text-xs text-[#DFEFF6]/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+        <div class="p-4 bg-[#1B1D3A] rounded-xl border border-[#4043A0] text-sm text-[#DFEFF6]/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
           <div class="space-y-1">
-            <strong class="text-white flex items-center gap-1.5 font-sans">
+            <strong class="text-white flex items-center gap-2 font-sans text-sm sm:text-base">
               <i data-lucide="calculator" class="w-4 h-4 text-cyan-300"></i>
               Obliczanie wektora gradientu \(\nabla f\):
             </strong>
-            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/85 leading-relaxed">
               Pochodne cząstkowe \(\nabla f = [\frac{\partial f}{\partial T}, \frac{\partial f}{\partial \text{pH}}, \frac{\partial f}{\partial G}]^T\) wyznaczają kierunek najszybszego wzrostu. Algorytm wylicza je numerycznie za pomocą centralnych ilorazów różnicowych: 
               \(\frac{\partial f}{\partial x_i} \approx \frac{f(x_i + \epsilon) - f(x_i - \epsilon)}{2\epsilon}\).
             </p>
           </div>
-          <div class="text-cyan-300 font-mono text-xs sm:text-sm bg-[#14162e] px-3 py-1.5 rounded-lg border border-[#4043A0] shrink-0">
+          <div class="text-cyan-300 font-mono text-xs sm:text-sm bg-[#14162e] px-3.5 py-2 rounded-lg border border-[#4043A0] shrink-0">
             $$\nabla f(\mathbf{x}) = \left[ \frac{\partial f}{\partial T}, \; \frac{\partial f}{\partial \text{pH}}, \; \frac{\partial f}{\partial G} \right]^T$$
           </div>
         </div>
@@ -670,26 +687,26 @@
       <!-- INTERAKTYWNY WYKRES 3D POWIERZCHNI Z PŁASZCZYZNĄ STYCZNĄ + KONSOLA WSPINACZKI -->
       <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-[#4043A0]">
         
-        <!-- LEWA: WYKRES 3D POWIERZCHNI Z PŁASZCZYZNĄ STYCZNĄ -->
+        <!-- LEWA: WYKRES 3D Z PŁASZCZYZNĄ STYCZNĄ -->
         <div class="lg:col-span-7 flex flex-col items-center">
-          <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs mb-2 gap-1">
+          <div class="w-full flex justify-between items-center text-xs mb-2">
             <span class="text-white font-bold flex items-center gap-1.5 text-sm">
               <i data-lucide="box" class="w-4 h-4 text-[#C4455C]"></i>
-              Interaktywny Wykres 3D Powierzchni (3D Surface Plot)
+              Interaktywny Krajobraz Żywotności 3D (Surface Plot)
             </span>
-            <span class="text-[11px] font-mono text-cyan-300">Czerwona płaszczyzna: Płaszczyzna styczna \(\nabla f\)</span>
+            <span class="text-xs font-mono text-cyan-300">Z = f(T, pH, Glukoza)</span>
           </div>
 
           <div class="stat-chart-card w-full p-1 flex justify-center relative group">
             <canvas id="landscape-canvas" class="w-full h-80 sm:h-96 block cursor-grab active:cursor-grabbing"></canvas>
-            <div class="absolute top-3 left-3 bg-[#1B1D3A]/85 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] text-[#DFEFF6] border border-[#4043A0] pointer-events-none font-mono">
-              3D View: Yaw &bull; Pitch
+            <div class="absolute top-3 left-3 bg-[#1B1D3A]/80 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] text-[#DFEFF6] border border-[#4043A0] pointer-events-none font-mono">
+              3D Surface: pH &bull; Temp &bull; Żywotność
             </div>
           </div>
 
           <div class="w-full flex justify-between text-[11px] text-[#DFEFF6]/70 font-mono mt-2 px-3">
-            <span>Osie 3D: pH (X) &bull; Temperatura (Y) &bull; Żywotność (Z)</span>
-            <span class="text-[#C4455C] font-semibold">Obracaj wykres 3D myszką lub dotykiem!</span>
+            <span>Osie: pH (od lewej), Temp (w głąb), Żywotność (wysokość)</span>
+            <span class="text-[#C4455C] font-semibold">Obracaj wykres myszką lub dotykiem!</span>
           </div>
         </div>
 
@@ -712,16 +729,16 @@
                 <span id="telemetry-grad" class="text-cyan-300 font-bold">Gotowy do startu</span>
               </div>
               <div class="text-[#DFEFF6]/80 flex justify-between">
-                <span>Wysokość na zboczu 3D:</span>
+                <span>Żywotność w punkcie:</span>
                 <span id="telemetry-viab" class="text-emerald-400 font-bold">-- %</span>
               </div>
             </div>
 
             <!-- Wyjaśnienie dlaczego gradient dąży do zera -->
-            <div class="p-2.5 rounded-lg bg-[#282C55]/60 border border-[#4043A0]/60 text-[11px] text-[#DFEFF6]/80 leading-relaxed font-sans">
-              <strong class="text-white">Dlaczego gradient na szczycie wynosi [0, 0, 0]?</strong><br>
+            <div class="p-3.5 rounded-xl bg-[#282C55]/60 border border-[#4043A0]/60 text-xs sm:text-sm text-[#DFEFF6]/90 leading-relaxed font-sans">
+              <strong class="text-white text-sm">Dlaczego gradient na szczycie wynosi [0, 0, 0]?</strong><br>
               Wektor gradientu \(\nabla f\) mierzy <em>nachylenie zbocza</em>. Na samym wierzchołku góry grunt staje się poziomy (\(\nabla f = \mathbf{0}\)). Wektor <strong>wynikowych optymalnych parametrów</strong> to:
-              <span class="text-emerald-400 font-mono font-bold block mt-0.5">[T = 37.0°C, pH = 7.20, G = 4.5 g/L]</span>
+              <span class="text-emerald-400 font-mono font-bold block mt-1">[T = 37.0°C, pH = 7.20, G = 4.5 g/L]</span>
             </div>
 
             <!-- Wyliczone nastawy -->
@@ -760,21 +777,21 @@
       <div class="glass-panel p-5 sm:p-6 space-y-4 border-[#4043A0]">
         <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
           <div>
-            <h4 class="text-base font-bold text-white flex items-center gap-2">
+            <h4 class="text-base sm:text-lg font-bold text-white flex items-center gap-2">
               <i data-lucide="calculator" class="w-5 h-5 text-emerald-400"></i>
               Szczegółowe Wyliczenia Matematyczne Krok po Kroku (Gradient Ascent)
             </h4>
-            <p class="text-xs text-[#DFEFF6]/70 mt-0.5">
+            <p class="text-xs sm:text-sm text-[#DFEFF6]/80 mt-1">
               Poniżej na żywo rejestrowane są dokładne wartości pochodnych cząstkowych, normy gradientu oraz wektora przesunięcia dla każdego kroku wspinaczki.
             </p>
           </div>
-          <div class="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#1B1D3A] border border-[#4043A0] text-cyan-300 shrink-0">
+          <div class="text-xs sm:text-sm font-mono px-3.5 py-2 rounded-lg bg-[#1B1D3A] border border-[#4043A0] text-cyan-300 shrink-0">
             \(\mathbf{x}_{k+1} = \mathbf{x}_k + \gamma \cdot \nabla f\)
           </div>
         </div>
 
         <div class="overflow-x-auto">
-          <table class="w-full text-xs text-left border-collapse">
+          <table class="w-full text-xs sm:text-sm text-left border-collapse">
             <thead>
               <tr class="border-b border-[#4043A0] text-[#DFEFF6]/70 uppercase font-mono bg-[#1B1D3A]/80">
                 <th class="py-2.5 px-3">Krok \(k\)</th>
@@ -788,7 +805,7 @@
             </thead>
             <tbody id="calc-steps-body" class="divide-y divide-[#4043A0]/40 font-mono">
               <tr id="calc-empty-row">
-                <td colspan="7" class="py-5 text-center text-[#DFEFF6]/50 italic font-sans">
+                <td colspan="7" class="py-5 text-center text-[#DFEFF6]/50 italic font-sans text-xs sm:text-sm">
                   Kliknij <strong>"Uruchom Wspinaczkę Gradientową"</strong> powyżej, aby zobaczyć rejestrację pełnych wyliczeń matematycznych krok po kroku!
                 </td>
               </tr>
@@ -801,9 +818,10 @@
   </main>
 
   <!-- FOOTER -->
-  <footer class="border-t border-[#4043A0] py-6 text-center text-xs text-[#DFEFF6]/60 max-w-6xl mx-auto w-full px-4">
+  <footer class="border-t border-[#4043A0] py-6 text-center text-xs sm:text-sm text-[#DFEFF6]/70 max-w-6xl mx-auto w-full px-4 flex flex-col items-center gap-2.5">
+    <img src="assets/img/logo_bc_icon.jpg" alt="SKN Biologów Cyfrowych" class="w-9 h-9 rounded-xl border border-[#4043A0] opacity-85 hover:opacity-100 transition-opacity">
     <p>Projekt przygotowany dla <strong>SKN Biologów Cyfrowych Uniwersytetu Łódzkiego</strong></p>
-    <p class="mt-1 text-[11px] text-[#DFEFF6]/40">Kierunek: Biologia i Biomedycyna Cyfrowa UŁ</p>
+    <p class="text-xs text-[#DFEFF6]/50">Kierunek: Biologia i Biomedycyna Cyfrowa UŁ</p>
   </footer>
 
   <!-- MODAL SUKCESU -->
@@ -813,13 +831,13 @@
         <i data-lucide="award" class="w-9 h-9"></i>
       </div>
       <h3 id="modal-title" class="text-2xl font-extrabold text-white">Triumf Biologii Cyfrowej i Doświadczalnej!</h3>
-      <p id="modal-desc" class="text-xs text-[#DFEFF6]/90 leading-relaxed">
+      <p id="modal-desc" class="text-sm sm:text-base text-[#DFEFF6]/90 leading-relaxed">
         Po wyliczeniu optimum przez algorytm gradientowy i zweryfikowaniu próby błękitem trypanu w laboratorium uzyskałeś
-        <span class="text-emerald-400 font-bold text-sm" id="modal-viability">98.2%</span> żywotności 
+        <span class="text-emerald-400 font-bold text-base" id="modal-viability">98.2%</span> żywotności 
         i maksymalną wydajność bioreaktora!
       </p>
 
-      <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] text-xs text-left space-y-1.5 font-mono">
+      <div class="bg-[#1B1D3A] p-4 rounded-xl border border-[#4043A0] text-xs sm:text-sm text-left space-y-2 font-mono">
         <div class="flex justify-between">
           <span class="text-[#DFEFF6]/70 font-sans">Integralność błon komórkowych:</span>
           <span class="text-emerald-400 font-bold font-sans">✓ Prawie 100% szczelne</span>

@@ -601,6 +601,10 @@ class AppController {
     const resize = () => {
       this.confettiCanvas.width = window.innerWidth;
       this.confettiCanvas.height = window.innerHeight;
+      if (this.dom.viewML && !this.dom.viewML.classList.contains('hidden')) {
+        this.optimizer.renderSingleParamPlots('plot-2d-temp', 'plot-2d-ph', 'plot-2d-glucose');
+        this.optimizer.render3DSurface('landscape-canvas', this.currentTemp, this.currentPH, this.currentGlucose);
+      }
     };
     window.addEventListener('resize', resize);
     resize();

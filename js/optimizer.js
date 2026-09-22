@@ -657,6 +657,7 @@ export class BioprocessOptimizer {
 
     const gamma = 0.28; // Współczynnik kroku (learning rate)
 
+    // Interwał 700 ms - spowolniona animacja, aby użytkownik zdążył zobaczyć każdy krok
     const interval = setInterval(() => {
       const viability = calculateViability(curT, curP, curG, false);
       const grad = this.calculateGradient(curT, curP, curG);
@@ -705,12 +706,11 @@ export class BioprocessOptimizer {
       curG += deltaG;
       step++;
 
-      if (step >= maxSteps || (Math.abs(CHO_CONSTANTS.OPT_TEMP - curT) < 0.08 && Math.abs(CHO_CONSTANTS.OPT_PH - curP) < 0.02)) {
+      if (step >= maxSteps || (Math.abs(CHO_CONSTANTS.OPT_TEMP - curT) < 0.08 && Math.abs(CHO_CONSTANTS.OPT_PH - curP) < 0.02 && Math.abs(CHO_CONSTANTS.OPT_GLUCOSE - curG) < 0.05)) {
         clearInterval(interval);
 
         // Finałowy stan optimum
         const finalViab = calculateViability(CHO_CONSTANTS.OPT_TEMP, CHO_CONSTANTS.OPT_PH, CHO_CONSTANTS.OPT_GLUCOSE, false);
-        const finalGrad = this.calculateGradient(CHO_CONSTANTS.OPT_TEMP, CHO_CONSTANTS.OPT_PH, CHO_CONSTANTS.OPT_GLUCOSE);
 
         const finalRow = {
           step,
@@ -739,6 +739,6 @@ export class BioprocessOptimizer {
           });
         }
       }
-    }, 150);
+    }, 700);
   }
 }

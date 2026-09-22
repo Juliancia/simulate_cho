@@ -1,0 +1,20 @@
+# Notatki i pliki organizacyjne
+TO_DO.md
+todo.md
+*.todo.md
+
+# Niewykorzystane pliki logo
+assets/img/LOGO_BC.jpg
+assets/img/LOGO_BC_blue.jpg
+assets/img/LOGO_BC_blue_right.jpg
+assets/img/logo_bc_square.jpg
+assets/img/logo_bc_white_icon.jpg
+assets/img/logo_bc_white_square.jpg
+
+# Pliki systemowe i środowiskowe
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp
+*.swo

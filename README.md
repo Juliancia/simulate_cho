@@ -45,10 +45,13 @@ Gdzie:
 - $f_{\text{pH}}(\text{pH})$ - symetryczny rozkład Gaussa wokół optimum fizjologicznego:
   $$f_{\text{pH}}(\text{pH}) = \exp\left( -\frac{(\text{pH} - 7.20)^2}{2 \cdot 0.35^2} \right)$$
 - $f_G(G)$ - model kinetyki Monoda z inhibicją substratową:
-  $$f_G(G) = \frac{G}{G + 0.5} \cdot \exp\left( -\frac{(G - 4.5)^2}{2 \cdot 3.2^2} \right) \cdot \frac{1}{\text{norm}}$$
+  $$f_G(G) = \begin{cases} \frac{G / (G + 0.5)}{4.5 / (4.5 + 0.5)} & G \le 4.5 \\ \frac{1}{1 + 0.12(G - 4.5)^{1.6}} & G > 4.5 \end{cases}$$
+
+#### Założenie inżynieryjne: uproszczenie sprzężeń skrośnych
+W żywej komórce parametry wpływają na siebie dynamicznie (podwyższona temperatura przyspiesza glikolizę i produkcję kwasu mlekowego, który wtórnie zakwasza pożywkę i obniża pH). W symulatorze zastosowano model multiplikatywny bez nieliniowych sprzężeń skrośnych ($T \times \text{pH} \times G$). Jest to celowe uproszczenie inżynieryjne (standard metodyki *Response Surface Methodology – RSM*), które eliminuje zbędną komplikację w postaci układów nieliniowych równań różniczkowych (ODE) i zapewnia przejrzystą demonstrację wspinaczki gradientowej. W warunkach przemysłowych taką stabilizację parametrów realizują regulatory PID bioreaktora.
 
 ### Wspinaczka gradientowa (Gradient Ascent)
-Algorytm wyszukuje maksimum funkcji żywotności w trójwymiarowej przestrzeni parametrów:
+Algorytm wyszukuje maksimum funkcji żywotności w trójwymiarowej przestrzeni parametrów $[T, \text{pH}, G]$:
 
 $$\mathbf{x}_{k+1} = \mathbf{x}_k + \gamma \cdot \nabla f(\mathbf{x}_k)$$
 
@@ -56,7 +59,7 @@ Wektor gradientu $\nabla f = [\frac{\partial f}{\partial T}, \frac{\partial f}{\
 
 $$\frac{\partial f}{\partial x_i} \approx \frac{f(\mathbf{x} + h_i \mathbf{e}_i) - f(\mathbf{x} - h_i \mathbf{e}_i)}{2 h_i}$$
 
-Dla każdego kroku wspinaczki generowana jest pełna telemetria numeryczna oraz wizualizowana jest płaszczyzna styczna na trójwymiarowym wykresie powierzchni odpowiedzi.
+Dla każdego kroku wspinaczki generowana jest pełna telemetria numeryczna oraz wizualizowana jest płaszczyzna styczna w trójwymiarowej przestrzeni parametrów.
 
 
 ## 4. Architektura i technologie
@@ -67,6 +70,7 @@ Aplikacja została zaprojektowana w architekturze **Zero-Build Single Page Appli
 - **HTML5 i semantyczny DOM**: Dwuetapowy interfejs użytkownika z podziałem na Laboratorium oraz Biologię Cyfrową.
 - **Vanilla JavaScript (ES2022 Modules)**: Modularny kod w standardzie ES Modules (`model.js`, `microscope.js`, `optimizer.js`, `app.js`).
 - **Tailwind CSS**: Nowoczesny framework CSS ładowany przez CDN, w pełni ostylowany zgodnie z identyfikacją wizualną koła naukowego (paleta barw: `#1B1D3A`, `#4043A0`, `#DFEFF6`, `#C4455C` oraz typografia nagłówkowa `Gochi Hand` i `Sriracha`).
+- **Oficjalne logo koła**: Zintegrowane zasoby graficzne z repozytorium `biologiacyfrowa/website_BC` umieszczone w nawigacji oraz stopce.
 - **HTML5 Canvas 2D (Mikroskop cyfrowy)**:
   - Własny silnik cząsteczkowy renderujący komórki CHO w rozdzielczości Retina (DPR).
   - Deterministyczne tasowanie algorytmem Fishera-Yatesa gwarantujące zgodność liczby żywych i martwych komórek ze statystykami.
@@ -74,15 +78,16 @@ Aplikacja została zaprojektowana w architekturze **Zero-Build Single Page Appli
   - Symulacja płynnego ruchu Browna i organicznego kołysania w cieczy hodowlanej.
   - Płynna animacja fali błękitu trypanu i optyki kontrastowo-fazowej.
 - **HTML5 Canvas 3D (Powierzchnia odpowiedzi i gradient)**:
-  - Autorski silnik projekcji izometrycznej 3D renderujący siatkę powierzchni funkcji $f(T, \text{pH}, G)$.
-  - Możliwość pełnego, płynnego obracania kątów kamery (yaw / pitch) myszą lub gestem dotykowym na smartfonie.
-  - Dynamiczne nanoszenie wektora gradientu, trajektorii wspinaczki oraz półprzezroczystej płaszczyzny stycznej.
-- **Chart.js**: Klasyczne wykresy statystyczne 2D przedstawiające pojedyncze przekroje parametrów na czystym, białym tle.
+  - Autorski silnik projekcji 3D z możliwością pełnego, płynnego obracania kątów kamery (yaw / pitch) myszą lub gestem dotykowym na smartfonie.
+  - Interaktywny krajobraz żywotności 3D (Surface Plot) z osiami: pH (od lewej), Temperatura (w głąb), Żywotność (wysokość).
+  - Cieniowanie hipsometryczne od chłodnego błękitu przez zieleń do złota (optimum 98.2%).
+  - Nanoszenie wektora gradientu $\nabla f$, trajektorii wspinaczki oraz trójwymiarowej płaszczyzny stycznej przylegającej do zbocza.
+- **Wykresy parametrów 2D**: Klasyczne wykresy statystyczne 2D przedstawiające pojedyncze przekroje parametrów na czystym, jasnym tle.
 - **KaTeX**: Biblioteka renderująca notację matematyczną LaTeX w czasie rzeczywistym.
 - **Lucide Icons**: Wektorowy zestaw ikon interfejsu.
 
 
-## 5. Bezpieczenstwo i izolacja danych lokalnych
+## 5. Bezpieczeństwo i izolacja danych lokalnych
 
 Aplikacja nie posiada centralnego serwera bazodanowego i nie wysyła żadnych danych telemetrycznych na zewnątrz:
 - Wszystkie wyniki prób laboratoryjnych, poniesione koszty oraz aktualne nastawy bioreaktora zapisywane są **wyłącznie w pamięci lokalnej przeglądarki użytkownika (`window.localStorage`)**.
@@ -102,11 +107,11 @@ Aplikacja nie posiada centralnego serwera bazodanowego i nie wysyła żadnych da
 5. Obserwuj animację barwienia: komórki martwe przybiorą kolor kobaltowy, komórki żywe pozostaną jasne. Karta wyników wskaże aktualną żywotność oraz gęstość komórek.
 6. Wynik zostanie odnotowany w tabeli **Dziennik Prób Laboratoryjnych**.
 
-### Krok 2: Optymalizacja cyfrowa (Machine Learning)
-1. Kliknij przycisk **Włącz Biologię Cyfrową (ML)** na górnym pasku lub pod tabelą prób.
+### Krok 2: Optymalizacja cyfrowa (Biologia Cyfrowa)
+1. Kliknij przycisk **Włącz Biologię Cyfrową (Optymalizacja)** na górnym pasku lub pod tabelą prób.
 2. Zapoznaj się z wykresami 2D parametrów oraz analityczną funkcją celu $f(T, \text{pH}, G)$ wypisaną w notacji matematycznej.
-3. W sekcji symulatora wspinaczki 3D kliknij **Uruchom Wspinaczkę Gradientową AI**.
-4. Obserwuj animację 3D: algorytm wędruje po zboczu funkcji celu ku szczytowi. W tabeli poniżej analizuj kolejne iteracje, wyliczone pochodne cząstkowe $\nabla f$ oraz wektor parametrów.
+3. W sekcji symulatora wspinaczki 3D kliknij **Uruchom Wspinaczkę Gradientową**.
+4. Obserwuj animację 3D: algorytm wędruje w przestrzeni parametrów ku optimum z komfortowym czasem kroku (700 ms). W tabeli poniżej analizuj kolejne iteracje, wyliczone pochodne cząstkowe $\nabla f$ oraz wektor parametrów.
 5. Po osiągnięciu maksimum kliknij przycisk **Zastosuj Wyliczone Optimum w Bioreaktorze**.
 
 ### Krok 3: Weryfikacja laboratoryjna optimum
