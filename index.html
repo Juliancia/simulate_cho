@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Symulator Hodowli Komórek CHO & Optymalizacja | SKN Biologów Cyfrowych UŁ</title>
+  <meta name="description" content="Symulator hodowli komórek ssaczych CHO z testem błękitem trypanu oraz optymalizacją bioprocesu dla SKN Biologów Cyfrowych Uniwersytetu Łódzkiego.">
+  
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            bc: {
+              bg: '#1B1D3A',
+              nav: '#4043A0',
+              coral: '#C4455C',
+              ice: '#DFEFF6',
+              card: '#282C55'
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <!-- Google Fonts: Gochi Hand & Sriracha (zgodnie ze stroną koła) + Inter/Mono -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Sriracha&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <!-- KaTeX do renderowania formuł matematycznych -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.css">
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/katex.min.js"></script>
+  <script defer src="https://cdn.jsdelivr.net/npm/katex@0.16.8/dist/contrib/auto-render.min.js"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body class="min-h-screen flex flex-col text-[#DFEFF6] antialiased selection:bg-[#C4455C] selection:text-white">
+  <canvas id="confetti-canvas"></canvas>
+
+  <!-- NAVBAR W STYLU STRONY KOŁA (website_BC) -->
+  <header class="sticky top-0 z-40 w-full backdrop-blur-md bg-[#4043A0]/95 border-b border-[#4043A0] px-4 py-3 shadow-lg">
+    <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
+      
+      <!-- Logo koła w czcionce Gochi Hand (zgodnie z repozytorium website_BC) -->
+      <div class="flex items-center gap-3 w-full sm:w-auto justify-center sm:justify-start text-center sm:text-left">
+        <div>
+          <div class="bc-logo font-gochi leading-none text-2xl sm:text-3xl text-[#DFEFF6] hover:text-[#C4455C] transition-colors cursor-pointer" id="logo-home">
+            skn biologów cyfrowych
+          </div>
+          <p class="text-[11px] text-[#DFEFF6]/80 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5 font-sans">
+            <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+            Uniwersytet Łódzki • Symulator Bioprocesu CHO & Optymalizacja
+          </p>
+        </div>
+      </div>
+
+      <!-- ZAKŁADKI NAWIGACJI -->
+      <div class="flex items-center justify-center w-full sm:w-auto">
+        <div class="bg-[#1B1D3A]/80 p-1 rounded-xl border border-[#4043A0] flex items-center gap-1 text-xs w-full sm:w-auto justify-center">
+          <button id="tab-nav-lab" class="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg font-bold transition-all flex items-center justify-center gap-1.5 bg-[#4043A0] text-[#DFEFF6] shadow-md">
+            <i data-lucide="microscope" class="w-3.5 h-3.5"></i>
+            <span>1. Laboratorium</span>
+          </button>
+          <button id="tab-nav-ml" class="flex-1 sm:flex-initial px-3.5 py-1.5 rounded-lg font-bold text-[#DFEFF6]/60 hover:text-white transition-all flex items-center justify-center gap-1.5">
+            <i data-lucide="line-chart" class="w-3.5 h-3.5"></i>
+            <span>2. Biologia Cyfrowa (Optymalizacja)</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================== -->
+  <!-- STRONA 1: WIDOK LABORATORIUM MANUALNEGO (#view-lab)            -->
+  <!-- ============================================================== -->
+  <main id="view-lab" class="flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-6">
+
+    <!-- HERO CHALLENGE BANNER -->
+    <div class="glass-panel p-4 sm:p-6 relative overflow-hidden border-[#4043A0]/60">
+      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <div class="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-[#1B1D3A] border border-[#4043A0] text-emerald-300 text-xs font-semibold mb-2">
+            <i data-lucide="target" class="w-3.5 h-3.5"></i>
+            Wyzwanie Bioinżyniera
+          </div>
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white tracking-tight">
+            Znajdź optymalne warunki hodowli komórek ssaczych CHO
+          </h2>
+          <p class="text-sm text-[#DFEFF6]/90 mt-1 max-w-2xl leading-relaxed">
+            Komórki <strong>CHO (jajnik chomika chińskiego)</strong> wytwarzają większość leków biologicznych na świecie. Twój cel: osiągnij 
+            <span class="text-emerald-400 font-bold">żywotność &ge; 90% żywych komórek</span> i <span class="text-cyan-300 font-bold">gęstość VCD &ge; 4.0 mln/mL</span>.
+          </p>
+        </div>
+        <div class="flex items-center gap-3 shrink-0">
+          <div class="bg-[#1B1D3A] border border-[#4043A0] rounded-xl p-3 text-center min-w-[90px]">
+            <span class="text-xs text-[#DFEFF6]/60 uppercase font-mono block">Próby</span>
+            <span id="stat-attempts" class="text-xl font-bold font-mono text-cyan-300">0</span>
+          </div>
+          <div class="bg-[#1B1D3A] border border-[#4043A0] rounded-xl p-3 text-center min-w-[90px]">
+            <span class="text-xs text-[#DFEFF6]/60 uppercase font-mono block">Koszt labu</span>
+            <span id="stat-cost" class="text-xl font-bold font-mono text-[#C4455C]">0 PLN</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- KARTA WIEDZY: DLACZEGO KOMÓRKI CHO I SKĄD BIORĄ SIĘ KOSZTY? -->
+    <div class="glass-panel p-4 sm:p-5 border-[#4043A0] space-y-3">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+        <div class="flex items-center gap-3">
+          <div class="w-9 h-9 rounded-xl bg-[#4043A0] flex items-center justify-center text-cyan-300 shrink-0 shadow">
+            <i data-lucide="help-circle" class="w-5 h-5 text-[#C4455C]"></i>
+          </div>
+          <div>
+            <h3 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+              Dlaczego komórki chomika chińskiego (CHO) i dlaczego próby laboratoryjne tyle kosztują?
+            </h3>
+            <p class="text-xs text-[#DFEFF6]/70">Standard światowej biofarmacji oraz ekonomia badań bioprocesowych</p>
+          </div>
+        </div>
+        <button id="btn-toggle-cho-info" class="text-xs px-3.5 py-2 rounded-xl bg-[#1B1D3A] hover:bg-[#4043A0] text-[#DFEFF6] border border-[#4043A0] transition flex items-center gap-2 shrink-0 font-semibold">
+          <i data-lucide="book-open" class="w-4 h-4 text-cyan-300"></i>
+          <span id="txt-toggle-cho-info">Rozwiń wiedzę bioinżynierską</span>
+        </button>
+      </div>
+
+      <!-- Treść rozwijana -->
+      <div id="cho-info-content" class="hidden pt-3 border-t border-[#4043A0]/60 grid grid-cols-1 md:grid-cols-2 gap-4 text-xs text-[#DFEFF6]/90 leading-relaxed">
+        
+        <!-- Kolumna 1: Dlaczego komórki CHO? -->
+        <div class="bg-[#1B1D3A]/80 p-4 rounded-xl border border-[#4043A0] space-y-2.5">
+          <h4 class="font-bold text-cyan-300 flex items-center gap-2 text-xs uppercase tracking-wider">
+            <i data-lucide="dna" class="w-4 h-4 text-[#C4455C]"></i>
+            1. Dlaczego komórki CHO (Chinese Hamster Ovary)?
+          </h4>
+          <ul class="space-y-2 text-[#DFEFF6]/80 list-disc list-inside">
+            <li><strong>Złoty standard biofarmacji:</strong> Aż <strong>ponad 70–80% wszystkich leków biologicznych</strong> na świecie (w tym przeciwciała monoklonalne mAbs przeciw nowotworom i chorobom autoimmunologicznym, enzymy czy erytropoetyna) jest wytwarzanych w liniach komórkowych CHO.</li>
+            <li><strong>Ludzkopodobna glikozylacja:</strong> Jako komórki ssacze, CHO potrafią przeprowadzać kluczowe <em>modyfikacje potranslacyjne</em> (przede wszystkim dołączanie odpowiednich łańcuchów cukrowych). Dzięki temu wyprodukowane leki białkowe nie są odrzucane przez układ odpornościowy pacjenta i nie wywołują wstrząsu anafilaktycznego.</li>
+            <li><strong>Hodowla w zawiesinie:</strong> Komórki CHO zostały zaadaptowane do wzrostu w zawiesinie w wielkich bioreaktorach (od 5 litrów do 20 000 litrów), bez konieczności przyczepiania się do powierzchni naczyń (adhezji).</li>
+            <li><strong>Bezpieczeństwo biologiczne:</strong> Wykazują naturalną oporność na większość groźnych ludzkich wirusów (m.in. HIV, wirusy zapalenia wątroby HBV/HCV), co drastycznie ułatwia certyfikację leków przez FDA i EMA.</li>
+          </ul>
+        </div>
+
+        <!-- Kolumna 2: Skąd biorą się koszty? -->
+        <div class="bg-[#1B1D3A]/80 p-4 rounded-xl border border-[#4043A0] space-y-2.5">
+          <h4 class="font-bold text-amber-300 flex items-center gap-2 text-xs uppercase tracking-wider">
+            <i data-lucide="coins" class="w-4 h-4 text-[#C4455C]"></i>
+            2. Skąd bierze się koszt każdej próby (180 PLN mikro / tysiące PLN pilot)?
+          </h4>
+          <ul class="space-y-2 text-[#DFEFF6]/80 list-disc list-inside">
+            <li><strong>Czyste chemicznie pożywki bezsurowicze (CD CHO):</strong> Pożywki hodowlane klasy farmaceutycznej z syntetycznymi czynnikami wzrostu, aminokwasami i witaminami kosztują od kilkuset do ponad 1 500 PLN za litr.</li>
+            <li><strong>Jednorazowy sprzęt sterylny:</strong> Każda próba wymaga sterylnych filtrów membranowych 0.22 µm, naczynia bioreaktorowego, certyfikowanych pipet, sterylnego błękitu trypanu i komór liczących Bürkera.</li>
+            <li><strong>Infrastruktura inkubatorów CO₂:</strong> Inkubacja wymaga stałego utrzymania 37.0°C, atmosfery 5% CO₂, ciągłego wytrząsania orbitalnego i filtracji HEPA przez 3.5 do 7 dni bez przerwy.</li>
+            <li><strong>Koszt błędu parametrów:</strong> W skali pilotażowej (5–50 L) pojedyncza seria testowa to koszt <strong>15 000 – 50 000 PLN</strong>! Błędnie dobrane parametry (np. zakwaszenie pożywki do pH 6.6 lub przegrzanie do 40°C) powodują śmierć komórek i natychmiastowe wyrzucenie całej partii do kosztownej utylizacji biohazard.</li>
+          </ul>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- MAIN WORKSPACE: MICROSCOPE + BIOREACTOR CONTROLS (DESKTOP: MIKROSKOP PO LEWEJ, BIOREAKTOR I WYNIKI PO PRAWEJ; MOBILE: BIOREAKTOR -> MIKROSKOP -> WYNIKI) -->
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+
+      <!-- LEWA NA DESKTOP (7 COLS) / DRUGA NA TELEFONIE (ORDER-2): MIKROSKOP CANVAS -->
+      <div class="order-2 lg:order-1 lg:col-span-7 flex flex-col items-center glass-panel p-4 sm:p-6">
+        <div class="w-full flex items-center justify-between mb-3">
+          <div class="flex items-center gap-2">
+            <span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span>
+            <h3 class="text-sm font-bold uppercase tracking-wider text-[#DFEFF6]">Podgląd Mikroskopowy</h3>
+          </div>
+          <div class="flex items-center gap-2">
+            <button id="btn-grid" class="text-xs px-2.5 py-1 rounded bg-[#1B1D3A] hover:bg-[#4043A0] text-[#DFEFF6] border border-[#4043A0] transition flex items-center gap-1">
+              <i data-lucide="grid" class="w-3.5 h-3.5"></i>
+              <span>Siatka Bürkera</span>
+            </button>
+            <span class="text-xs font-mono text-[#DFEFF6]/70 bg-[#1B1D3A] px-2 py-1 rounded border border-[#4043A0]">40x Phase</span>
+          </div>
+        </div>
+
+        <!-- Okular mikroskopu -->
+        <div class="microscope-wrapper my-2">
+          <canvas id="microscope-canvas"></canvas>
+        </div>
+
+        <!-- Mikroskop Status Bar & Trypan Blue Button -->
+        <div class="w-full mt-4 space-y-3">
+          <div class="flex flex-col sm:flex-row gap-3">
+            <button id="btn-trypan" class="flex-1 py-3 px-4 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-700 hover:from-blue-500 hover:to-indigo-600 text-white font-bold text-sm shadow-lg shadow-blue-900/30 transition-all flex items-center justify-center gap-2 border border-blue-400/30">
+              <i data-lucide="droplet" class="w-4 h-4 fill-current"></i>
+              <span>Wpuść Błękit Trypanu (Test Żywotności)</span>
+            </button>
+          </div>
+
+          <!-- Legenda barwienia -->
+          <div class="grid grid-cols-2 gap-2 text-xs bg-[#1B1D3A]/80 p-2.5 rounded-lg border border-[#4043A0]/60">
+            <div class="flex items-center gap-2">
+              <div class="w-3.5 h-3.5 rounded-full bg-slate-100 border border-slate-400 shadow-sm shadow-white/40"></div>
+              <span class="text-[#DFEFF6]"><strong>Żywe:</strong> jasne (szczelna błona)</span>
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="w-3.5 h-3.5 rounded-full bg-blue-600 border border-blue-900 shadow-sm shadow-blue-500/40"></div>
+              <span class="text-[#DFEFF6]"><strong>Martwe:</strong> błękitne (błękit trypanu)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PRAWA NA DESKTOP (5 COLS): NASTAWY BIOREAKTORA (1. NA TELEFONIE) ORAZ WYNIKI (3. NA TELEFONIE - PO MIKROSKOPIE) -->
+      <div class="mobile-contents desktop-right-col lg:order-2 lg:col-span-5 gap-6">
+
+        <!-- KONTROLA PARAMETRÓW BIOREAKTORA (ORDER-1 NA MOBILE) -->
+        <div class="order-1 glass-panel p-5 space-y-5">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+              <i data-lucide="sliders" class="w-4 h-4 text-[#C4455C]"></i>
+              Parametry Bioreaktora
+            </h3>
+            <span class="text-xs text-[#DFEFF6]/60">Nastawy manualne</span>
+          </div>
+
+          <!-- Suwak 1: Temperatura -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <label for="slider-temp" class="text-[#DFEFF6] font-semibold flex items-center gap-1.5">
+                <i data-lucide="thermometer" class="w-4 h-4 text-orange-400"></i>
+                Temperatura inkubatora
+              </label>
+              <span id="val-temp" class="font-mono font-bold text-orange-400 text-sm">34.0 °C</span>
+            </div>
+            <input type="range" id="slider-temp" class="slider-temp" min="20.0" max="45.0" step="0.5" value="34.0">
+            <div class="flex justify-between text-[10px] text-[#DFEFF6]/50 font-mono">
+              <span>20°C (Hypotermia)</span>
+              <span>45°C (Denaturacja)</span>
+            </div>
+          </div>
+
+          <!-- Suwak 2: pH -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <label for="slider-ph" class="text-[#DFEFF6] font-semibold flex items-center gap-1.5">
+                <i data-lucide="beaker" class="w-4 h-4 text-purple-300"></i>
+                Kwasowość (pH) pożywki
+              </label>
+              <span id="val-ph" class="font-mono font-bold text-purple-300 text-sm">6.60</span>
+            </div>
+            <input type="range" id="slider-ph" class="slider-ph" min="5.5" max="9.0" step="0.05" value="6.60">
+            <div class="flex justify-between text-[10px] text-[#DFEFF6]/50 font-mono">
+              <span>5.5 (Kwasica)</span>
+              <span>9.0 (Zasadowość)</span>
+            </div>
+          </div>
+
+          <!-- Suwak 3: Glukoza -->
+          <div class="space-y-1.5">
+            <div class="flex justify-between items-center text-xs">
+              <label for="slider-glucose" class="text-[#DFEFF6] font-semibold flex items-center gap-1.5">
+                <i data-lucide="candy" class="w-4 h-4 text-emerald-400"></i>
+                Glukoza w pożywce (g/L)
+              </label>
+              <span id="val-glucose" class="font-mono font-bold text-emerald-400 text-sm">2.0 g/L</span>
+            </div>
+            <input type="range" id="slider-glucose" class="slider-glucose" min="0.0" max="10.0" step="0.2" value="2.0">
+            <div class="flex justify-between text-[10px] text-[#DFEFF6]/50 font-mono">
+              <span>0 g/L (Głód)</span>
+              <span>10 g/L (Stres osm.)</span>
+            </div>
+          </div>
+
+          <!-- Przycisk Inkubacji -->
+          <button id="btn-incubate" class="w-full py-3 px-4 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-700 hover:from-emerald-500 hover:to-teal-600 text-white font-bold text-sm shadow-lg transition-all flex items-center justify-center gap-2">
+            <i data-lucide="flask-conical" class="w-4 h-4"></i>
+            <span>Zainkubuj Próbkę (3.5 dnia w labie)</span>
+          </button>
+        </div>
+
+        <!-- KARTA WYNIKÓW BIEŻĄCYCH (ORDER-3 NA MOBILE - PO MIKROSKOPIE!) -->
+        <div class="order-3 glass-panel p-5 space-y-4">
+          <div class="flex items-center justify-between">
+            <h3 class="text-sm font-bold uppercase tracking-wider text-white flex items-center gap-2">
+              <i data-lucide="activity" class="w-4 h-4 text-emerald-400"></i>
+              Wynik Analizy Żywotności
+            </h3>
+            <span id="status-badge" class="badge-tech bg-[#1B1D3A] text-[#DFEFF6] border border-[#4043A0]">Oczekiwanie</span>
+          </div>
+
+          <div class="grid grid-cols-2 gap-3">
+            <div class="bg-[#1B1D3A] p-3 rounded-xl border border-[#4043A0]">
+              <span class="text-[11px] text-[#DFEFF6]/70 block font-medium">Żywotność (% komórek żywych):</span>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span id="res-viability" class="text-2xl font-extrabold font-mono text-white">--</span>
+                <span class="text-xs text-[#DFEFF6]/60 font-mono">%</span>
+              </div>
+              <div class="w-full bg-[#14162e] rounded-full h-1.5 mt-2 overflow-hidden">
+                <div id="bar-viability" class="bg-emerald-500 h-1.5 rounded-full transition-all duration-500" style="width: 0%"></div>
+              </div>
+              <span id="res-cell-counts" class="text-[10px] text-[#DFEFF6]/70 font-mono block mt-1.5">Zliczenie: --</span>
+            </div>
+
+            <div class="bg-[#1B1D3A] p-3 rounded-xl border border-[#4043A0]">
+              <span class="text-[11px] text-[#DFEFF6]/70 block font-medium">Gęstość VCD:</span>
+              <div class="flex items-baseline gap-1 mt-1">
+                <span id="res-vcd" class="text-2xl font-extrabold font-mono text-cyan-300">--</span>
+                <span class="text-xs text-[#DFEFF6]/60 font-mono">mln/mL</span>
+              </div>
+              <span class="text-[10px] text-[#DFEFF6]/50 block mt-2">Cel: &ge; 4.0 mln/mL</span>
+            </div>
+          </div>
+
+          <p id="res-description" class="text-xs text-[#DFEFF6]/90 bg-[#1B1D3A]/90 p-3 rounded-lg border border-[#4043A0] leading-relaxed">
+            Dopasuj parametry i kliknij <strong>Zainkubuj Próbkę</strong>, a następnie zbadaj żywotność błękitem trypanu.
+          </p>
+        </div>
+
+      </div>
+
+    </div>
+
+    <!-- DZIENNIK PRÓB I PRZYCISK PRZEJŚCIA DO DRUGIEJ STRONY (OPTYMALIZACJA) -->
+    <div class="glass-panel p-5 sm:p-6 space-y-4">
+      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+        <div>
+          <h3 class="text-base font-bold text-white flex items-center gap-2">
+            <i data-lucide="clipboard-list" class="w-5 h-5 text-amber-400"></i>
+            Dziennik Prób Laboratoryjnych
+          </h3>
+          <p class="text-xs text-[#DFEFF6]/70 mt-0.5">Każda próba manualna to koszt ok. 180 PLN i 3.5 dnia oczekiwania na wyniki hodowli.</p>
+        </div>
+
+        <!-- PRZYCISK PRZEJŚCIA W BARWACH KOŁA (btn-coral) -->
+        <!-- PRZYCISKI AKCJI: WYCZYŚĆ DANE LOKALNE ORAZ PRZEJŚCIE DO OPTYMALIZACJI -->
+        <div class="flex items-center gap-2">
+          <button id="btn-clear-history" class="text-xs px-3 py-2.5 rounded-xl bg-[#1B1D3A] hover:bg-rose-950/60 text-[#DFEFF6]/70 hover:text-rose-300 border border-[#4043A0] transition flex items-center gap-1.5 font-medium" title="Zresetuj statystyki i historię prób na tym urządzeniu">
+            <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+            <span>Wyczyść dane</span>
+          </button>
+          <button id="btn-jump-ml" class="btn-coral px-4 sm:px-5 py-2.5 sm:py-3 rounded-xl font-bold text-xs sm:text-sm tracking-wide shadow-xl flex items-center justify-center gap-2">
+            <i data-lucide="sparkles" class="w-4 h-4"></i>
+            <span>Włącz Biologię Cyfrową (Optymalizacja) &rarr;</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Tabela historii prób -->
+      <div class="overflow-x-auto">
+        <table class="w-full text-xs text-left border-collapse">
+          <thead>
+            <tr class="border-b border-[#4043A0] text-[#DFEFF6]/70 uppercase font-mono">
+              <th class="py-2 px-3">#</th>
+              <th class="py-2 px-3">Temp.</th>
+              <th class="py-2 px-3">pH</th>
+              <th class="py-2 px-3">Glukoza</th>
+              <th class="py-2 px-3">Żywotność</th>
+              <th class="py-2 px-3">Gęstość VCD</th>
+              <th class="py-2 px-3">Status</th>
+            </tr>
+          </thead>
+          <tbody id="history-table-body" class="divide-y divide-[#4043A0]/50 font-mono">
+            <tr id="history-empty-row">
+              <td colspan="7" class="py-4 text-center text-[#DFEFF6]/50 italic font-sans">Brak przeprowadzonych prób. Zacznij od ustawienia suwaków!</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+  </main>
+
+
+  <!-- ============================================================== -->
+  <!-- STRONA 2: BIOLOGIA CYFROWA & OPTYMALIZACJA (#view-ml)          -->
+  <!-- ============================================================== -->
+  <main id="view-ml" class="hidden flex-1 max-w-6xl w-full mx-auto px-4 py-6 space-y-8">
+
+    <!-- GÓRNY PASEK NAWIGACJI STRONY 2 -->
+    <div class="flex items-center justify-between">
+      <button id="btn-back-to-lab" class="px-4 py-2 rounded-xl bg-[#1B1D3A] hover:bg-[#4043A0] text-[#DFEFF6] border border-[#4043A0] text-xs font-semibold flex items-center gap-2 transition">
+        <i data-lucide="arrow-left" class="w-4 h-4"></i>
+        <span>Wróć do mikroskopu i bioreaktora</span>
+      </button>
+      <div class="inline-flex items-center gap-1.5 px-3 py-1 rounded-full bg-[#4043A0]/60 border border-[#4043A0] text-[#DFEFF6] text-xs font-semibold">
+        <i data-lucide="line-chart" class="w-3.5 h-3.5 text-[#C4455C]"></i>
+        <span>Moduł Edukacyjny Biologii Cyfrowej</span>
+      </div>
+    </div>
+
+    <!-- SEKCJA 1: CO WŁAŚCIWIE ROBIMY? CEL MATEMATYCZNY -->
+    <div class="glass-panel p-6 sm:p-8 space-y-4">
+      <div class="flex items-start gap-4">
+        <div class="w-12 h-12 rounded-2xl bg-[#4043A0] text-[#DFEFF6] flex items-center justify-center shrink-0 shadow-lg">
+          <i data-lucide="help-circle" class="w-6 h-6"></i>
+        </div>
+        <div class="space-y-2">
+          <h2 class="text-xl sm:text-2xl font-extrabold text-white">
+            Krok 1: Sformułowanie problemu optymalizacji hodowli
+          </h2>
+          <p class="text-sm text-[#DFEFF6]/90 leading-relaxed">
+            W laboratorium każda komórka ssacza CHO reaguje na warunki środowiska wg pewnej złożonej, nieliniowej funkcji przeżywalności:
+            <span class="text-cyan-300 font-mono font-semibold">f(T, pH, Glukoza)</span>.
+            Tradycyjna metoda prób i błędów w laboratorium oznacza miesiące pracy i wysokie koszty odczynników.
+          </p>
+        </div>
+      </div>
+
+      <!-- WZÓR MATEMATYCZNY W KATEX -->
+      <div class="bg-[#1B1D3A] p-5 rounded-2xl border border-[#4043A0] text-center space-y-2 shadow-inner">
+        <span class="text-xs text-[#DFEFF6]/60 uppercase tracking-widest font-mono block">Nasz cel matematyczny:</span>
+        <div class="text-lg sm:text-2xl text-emerald-400 font-bold py-1">
+          $$\max_{T, \, \text{pH}, \, G} \; \text{Żywotność}(T, \text{pH}, G)$$
+        </div>
+        <p class="text-xs text-[#DFEFF6]/70 max-w-xl mx-auto">
+          Chcemy znaleźć taki wektor nastaw bioreaktora 
+          <span class="text-cyan-300 font-semibold">\(\mathbf{x}^* = [T^*, \, \text{pH}^*, \, G^*]\)</span>, 
+          dla którego funkcja żywotności osiąga <strong>maksimum globalne (&ge; 98%)</strong>.
+        </p>
+      </div>
+    </div>
+
+    <!-- SEKCJA 2: WYKRESY 2D DLA POJEDYNCZYCH PARAMETRÓW (KLASYCZNA STATYSTYKA - JASNE TŁO) -->
+    <div class="glass-panel p-6 sm:p-8 space-y-6">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B1D3A] text-emerald-300 border border-[#4043A0] text-xs font-semibold mb-2">
+          <i data-lucide="line-chart" class="w-3.5 h-3.5 text-[#C4455C]"></i>
+          Klasyczna Analiza Czynnikowa 2D
+        </div>
+        <h3 class="text-xl font-bold text-white">
+          Krok 2: Wpływ każdego parametru z osobna
+        </h3>
+        <p class="text-xs sm:text-sm text-[#DFEFF6]/80 mt-1 max-w-3xl leading-relaxed">
+          Poniżej znajdują się klasyczne wykresy statystyczne odpowiedzi komórek CHO na poszczególne parametry. 
+          Pomarańczowe punkty <span class="inline-block w-2.5 h-2.5 rounded-full bg-[#ea580c] mx-1 border border-white"></span> to <strong>Twoje dotychczasowe próby manualne</strong>!
+        </p>
+      </div>
+
+      <!-- NOTA NAUKOWA: SKĄD MAMY DANE I STĘŻENIE GLUKOZY (WIEDZA A PRIORI) -->
+      <div class="p-4 bg-[#1B1D3A]/90 rounded-2xl border border-[#4043A0] flex flex-col sm:flex-row items-start gap-3.5 shadow-inner">
+        <div class="w-9 h-9 rounded-xl bg-[#4043A0] text-cyan-300 flex items-center justify-center shrink-0 mt-0.5 shadow">
+          <i data-lucide="book-open" class="w-5 h-5 text-[#C4455C]"></i>
+        </div>
+        <div class="space-y-1.5 text-xs text-[#DFEFF6]/90 leading-relaxed">
+          <div class="flex flex-wrap items-center gap-2">
+            <span class="text-white font-bold text-sm">Skąd mamy dane na wykresach i skąd znamy stężenie glukozy?</span>
+            <span class="badge-tech bg-[#4043A0] text-cyan-300 border border-[#4043A0] text-[10px]">Wiedza a priori z literatury</span>
+          </div>
+          <p>
+            W biologii cyfrowej i optymalizacji bioprocesów rzadko zaczynamy od zera. Kształt tych krzywych to <strong>wiedza a priori</strong> (wiedza wstępna) pozyskana z publikacji bioprocesowych, biofizyki enzymów oraz konsultacji z biologami doświadczalnymi:
+          </p>
+          <div class="grid grid-cols-1 md:grid-cols-2 gap-3 pt-1 text-[11px] text-[#DFEFF6]/80">
+            <div class="bg-[#14162e] p-2.5 rounded-lg border border-[#4043A0]/60">
+              <strong class="text-emerald-300 block mb-0.5">Glukoza w pożywce (skąd zakres 0–10 g/L i optimum 4.5 g/L?):</strong>
+              Glukoza to podstawowe paliwo komórek CHO. Poniżej 1.0 g/L zachodzi śmierć głodowa (kinetyka Monoda, stała \(K_s \approx 0.5\text{ g/L}\)). Jednak powyżej 6.0 g/L pojawia się tzw. <em>efekt Crabtree</em> – komórki wytwarzają nadmiar toksycznego mleczanu (kwasu mlekowego) i wzrasta osmolalność. Literatura biotechnologiczna jednoznacznie wskazuje punkt równowagi wokół <strong>4.0 – 4.5 g/L</strong>.
+            </div>
+            <div class="bg-[#14162e] p-2.5 rounded-lg border border-[#4043A0]/60">
+              <strong class="text-orange-300 block mb-0.5">Temperatura (37.0°C) i pH (7.20):</strong>
+              Wynikają bezpośrednio z termodynamiki białek ssaczych. Powyżej 39°C dochodzi do szybkiej denaturacji enzymów oddechowych (stąd asymetryczny spadek), a wąskie okno pH (7.0 – 7.4) jest wymuszone przez fizjologiczny bufor wodorowęglanowy krwi i cytoplazmy ssaków.
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 3 WYKRESY 2D NA BIAŁYM TLE W STYLU KLASYCZNEJ STATYSTYKI -->
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+
+        <!-- WYKRES 2D 1: TEMPERATURA -->
+        <div class="bg-[#20234a] p-4 rounded-2xl border border-[#4043A0] flex flex-col space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-orange-400 flex items-center gap-1.5">
+              <i data-lucide="thermometer" class="w-4 h-4"></i>
+              Temperatura (T)
+            </span>
+            <span class="text-[11px] font-mono text-emerald-400 font-bold">Optimum: 37.0°C</span>
+          </div>
+
+          <div class="stat-chart-card p-1">
+            <canvas id="plot-2d-temp" class="w-full h-48 block"></canvas>
+          </div>
+
+          <p class="text-[11px] text-[#DFEFF6]/80 leading-relaxed">
+            <strong>Asymetria termiczna:</strong> Poniżej 32°C metabolizm gwałtownie zwalnia. Powyżej 39°C następuje szybka denaturacja białek i szok cieplny.
+          </p>
+        </div>
+
+        <!-- WYKRES 2D 2: pH -->
+        <div class="bg-[#20234a] p-4 rounded-2xl border border-[#4043A0] flex flex-col space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-purple-300 flex items-center gap-1.5">
+              <i data-lucide="beaker" class="w-4 h-4"></i>
+              Kwasowość (pH)
+            </span>
+            <span class="text-[11px] font-mono text-emerald-400 font-bold">Optimum: 7.20</span>
+          </div>
+
+          <div class="stat-chart-card p-1">
+            <canvas id="plot-2d-ph" class="w-full h-48 block"></canvas>
+          </div>
+
+          <p class="text-[11px] text-[#DFEFF6]/80 leading-relaxed">
+            <strong>Wąskie okno fizjologiczne:</strong> Kwasica (&lt;6.8) blokuje enzymy. Zasadowość (&gt;7.8) powoduje rozpad lipidów błony komórkowej.
+          </p>
+        </div>
+
+        <!-- WYKRES 2D 3: GLUKOZA -->
+        <div class="bg-[#20234a] p-4 rounded-2xl border border-[#4043A0] flex flex-col space-y-3">
+          <div class="flex items-center justify-between">
+            <span class="text-xs font-bold text-emerald-400 flex items-center gap-1.5">
+              <i data-lucide="candy" class="w-4 h-4"></i>
+              Glukoza w pożywce (G)
+            </span>
+            <span class="text-[11px] font-mono text-emerald-400 font-bold">Optimum: 4.5 g/L</span>
+          </div>
+
+          <div class="stat-chart-card p-1">
+            <canvas id="plot-2d-glucose" class="w-full h-48 block"></canvas>
+          </div>
+
+          <p class="text-[11px] text-[#DFEFF6]/80 leading-relaxed">
+            <strong>Kinetyka Monoda:</strong> Brak glukozy to śmierć głodowa. Nadmiar (&gt;7 g/L) wywołuje stres osmotyczny i toksyczny kwas mlekowy.
+          </p>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- SEKCJA 3: DLACZEGO WIĘCEJ WYMIARÓW I JAK DZIAŁA ALGORYTM GRADIENTOWY -->
+    <div class="glass-panel p-6 sm:p-8 space-y-6">
+      <div>
+        <div class="inline-flex items-center gap-1.5 px-2.5 py-0.5 rounded-full bg-[#1B1D3A] border border-[#4043A0] text-cyan-300 text-xs font-semibold mb-2">
+          <i data-lucide="compass" class="w-3.5 h-3.5 text-[#C4455C]"></i>
+          Algorytm Wspinaczki Górskiej
+        </div>
+        <h3 class="text-xl font-bold text-white">
+          Krok 3: Jak działa algorytm Gradient Ascent (Wspinaczka na szczyt)?
+        </h3>
+      </div>
+
+      <!-- METAFORA WSPINACZKI -->
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 items-center">
+        <div class="space-y-3 text-xs sm:text-sm text-[#DFEFF6]/90 leading-relaxed">
+          <p>
+            W realnym bioreaktorze parametry <strong>wpływają na siebie jednocześnie</strong> (np. wyższa temperatura przyspiesza zużycie glukozy i zakwasza pożywkę). Tworzy to wielowymiarowy „krajobraz górzysty”.
+          </p>
+          <div class="p-3.5 bg-[#1B1D3A] rounded-xl border border-[#4043A0] space-y-1.5 shadow-inner">
+            <strong class="text-white flex items-center gap-1.5 font-sans">
+              <i data-lucide="mountain" class="w-4 h-4 text-[#C4455C]"></i>
+              Metafora: Wspinaczka we mgle
+            </strong>
+            <p class="text-xs text-[#DFEFF6]/70">
+              Wyobraź sobie, że stoisz w gęstej mgle na zboczu góry. Nie widzisz, gdzie jest szczyt. Co robisz?
+              Badasz stopą nachylenie podłoża w każdym kierunku. 
+              <strong>Gradient \(\nabla f\) to kompas wskazujący kierunek najbardziej stromego podejścia pod górę!</strong>
+            </p>
+          </div>
+        </div>
+
+        <!-- FORMULA GRADIENTU W KATEX -->
+        <div class="bg-[#1B1D3A] p-5 rounded-2xl border border-[#4043A0] space-y-3 text-center shadow-inner">
+          <span class="text-xs font-mono text-cyan-300 uppercase tracking-wider block">Wzór aktualizacji parametrów:</span>
+          <div class="text-base sm:text-xl font-mono text-white py-1">
+            $$\mathbf{x}_{k+1} = \mathbf{x}_k + \gamma \cdot \nabla f(\mathbf{x}_k)$$
+          </div>
+          <div class="text-[11px] text-[#DFEFF6]/70 text-left space-y-1 bg-[#282C55]/60 p-2.5 rounded-lg font-mono">
+            <div>&bull; <span class="text-cyan-300">\(\mathbf{x}_k = [T, \text{pH}, G]\)</span>: aktualne nastawy bioreaktora</div>
+            <div>&bull; <span class="text-emerald-400">\(\nabla f = [\frac{\partial f}{\partial T}, \frac{\partial f}{\partial \text{pH}}, \frac{\partial f}{\partial G}]\)</span>: wektor gradientu</div>
+            <div>&bull; <span class="text-[#C4455C] font-bold">\(\gamma\)</span>: współczynnik kroku (ang. <em>learning rate</em>)</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- DOKŁADNA POSTAĆ MATEMATYCZNA FUNKCJI f(T, pH, G) I GRADIENTU -->
+      <div class="bg-[#14162e] p-5 sm:p-6 rounded-2xl border border-[#4043A0] space-y-4 shadow-inner">
+        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-[#4043A0]/60 pb-3">
+          <div>
+            <h4 class="text-sm sm:text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="binary" class="w-5 h-5 text-emerald-400"></i>
+              Dokładna Postać Matematyczna Funkcji Celu \(f(T, \text{pH}, G)\)
+            </h4>
+            <p class="text-xs text-[#DFEFF6]/70 mt-0.5">
+              Analityczny model kinetyczno-termodynamiczny opisujący odpowiedź komórek CHO na parametry hodowli
+            </p>
+          </div>
+          <span class="badge-tech bg-[#4043A0] text-cyan-300 border border-[#4043A0] font-mono text-[11px] self-start sm:self-center">
+            KaTeX Analytical Model
+          </span>
+        </div>
+
+        <p class="text-xs text-[#DFEFF6]/90 leading-relaxed">
+          Całkowita żywotność komórek CHO \(f(T, \text{pH}, G)\) jest iloczynem maksymalnej biologicznej przeżywalności w optymalnych warunkach (\(98.2\%\)) oraz trzech niezależnych składowych środowiskowych:
+        </p>
+
+        <!-- Główny wzór iloczynowy -->
+        <div class="text-center py-3 bg-[#1B1D3A] rounded-xl border border-[#4043A0] font-mono text-emerald-300 text-sm sm:text-lg overflow-x-auto px-4 shadow-sm">
+          $$f(T, \text{pH}, G) = 98.2\% \cdot f_T(T) \cdot f_{\text{pH}}(\text{pH}) \cdot f_G(G)$$
+        </div>
+
+        <!-- 3 Składowe analityczne -->
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-3 text-xs">
+          <!-- 1. Czynnik termiczny -->
+          <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] space-y-2">
+            <span class="text-orange-400 font-bold block flex items-center gap-1.5">
+              <i data-lucide="thermometer" class="w-3.5 h-3.5"></i>
+              1. Czynnik termiczny \(f_T(T)\)
+            </span>
+            <div class="text-[11px] text-[#DFEFF6] py-1 font-mono text-center bg-[#14162e] rounded p-2">
+              $$f_T(T) = \exp\left( -\frac{(T - 37.0)^2}{2\sigma_T^2} \right)$$
+            </div>
+            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+              <strong>Asymetria termiczna:</strong><br>
+              &bull; \(\sigma_T = 6.0\) dla \(T \le 37.0^\circ\text{C}\) (spowolnienie metaboliczne w hipotermii)<br>
+              &bull; \(\sigma_T = 2.4\) dla \(T > 37.0^\circ\text{C}\) (gwałtowna denaturacja białek i szok cieplny).
+            </p>
+          </div>
+
+          <!-- 2. Czynnik pH -->
+          <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] space-y-2">
+            <span class="text-purple-300 font-bold block flex items-center gap-1.5">
+              <i data-lucide="beaker" class="w-3.5 h-3.5"></i>
+              2. Czynnik kwasowości \(f_{\text{pH}}(\text{pH})\)
+            </span>
+            <div class="text-[11px] text-[#DFEFF6] py-1 font-mono text-center bg-[#14162e] rounded p-2">
+              $$f_{\text{pH}}(\text{pH}) = \exp\left( -\frac{(\text{pH} - 7.20)^2}{2 \cdot 0.55^2} \right)$$
+            </div>
+            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+              <strong>Wąskie okno fizjologiczne:</strong><br>
+              Rozkład Gaussa z odchyleniem \(\sigma_{\text{pH}} = 0.55\). Maksymalna aktywność enzymów i stabilność lipidów błony komórkowej przypada na \(\text{pH} = 7.20\).
+            </p>
+          </div>
+
+          <!-- 3. Czynnik glukozy -->
+          <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] space-y-2">
+            <span class="text-emerald-400 font-bold block flex items-center gap-1.5">
+              <i data-lucide="candy" class="w-3.5 h-3.5"></i>
+              3. Czynnik glukozy \(f_G(G)\)
+            </span>
+            <div class="text-[10px] text-[#DFEFF6] py-1 font-mono text-center bg-[#14162e] rounded p-1.5 overflow-x-auto">
+              $$f_G(G) = \begin{cases} \frac{G / (G + 0.5)}{4.5 / (4.5 + 0.5)} & G \le 4.5 \\ \frac{1}{1 + 0.12(G - 4.5)^{1.6}} & G > 4.5 \end{cases}$$
+            </div>
+            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+              <strong>Kinetyka Monoda & inhibicja:</strong><br>
+              Nasycenie enzymatyczne substratem do \(4.5\text{ g/L}\). Powyżej – nieliniowe hamowanie wzrostu przez toksyczny mleczan i hiperosmolalność pożywki.
+            </p>
+          </div>
+        </div>
+
+        <!-- Jak liczony jest gradient -->
+        <div class="p-3.5 bg-[#1B1D3A] rounded-xl border border-[#4043A0] text-xs text-[#DFEFF6]/90 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3">
+          <div class="space-y-1">
+            <strong class="text-white flex items-center gap-1.5 font-sans">
+              <i data-lucide="calculator" class="w-4 h-4 text-cyan-300"></i>
+              Obliczanie wektora gradientu \(\nabla f\):
+            </strong>
+            <p class="text-[11px] text-[#DFEFF6]/70 leading-relaxed">
+              Pochodne cząstkowe \(\nabla f = [\frac{\partial f}{\partial T}, \frac{\partial f}{\partial \text{pH}}, \frac{\partial f}{\partial G}]^T\) wyznaczają kierunek najszybszego wzrostu. Algorytm wylicza je numerycznie za pomocą centralnych ilorazów różnicowych: 
+              \(\frac{\partial f}{\partial x_i} \approx \frac{f(x_i + \epsilon) - f(x_i - \epsilon)}{2\epsilon}\).
+            </p>
+          </div>
+          <div class="text-cyan-300 font-mono text-xs sm:text-sm bg-[#14162e] px-3 py-1.5 rounded-lg border border-[#4043A0] shrink-0">
+            $$\nabla f(\mathbf{x}) = \left[ \frac{\partial f}{\partial T}, \; \frac{\partial f}{\partial \text{pH}}, \; \frac{\partial f}{\partial G} \right]^T$$
+          </div>
+        </div>
+      </div>
+
+      <!-- INTERAKTYWNY WYKRES 3D POWIERZCHNI Z PŁASZCZYZNĄ STYCZNĄ + KONSOLA WSPINACZKI -->
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 pt-4 border-t border-[#4043A0]">
+        
+        <!-- LEWA: WYKRES 3D POWIERZCHNI Z PŁASZCZYZNĄ STYCZNĄ -->
+        <div class="lg:col-span-7 flex flex-col items-center">
+          <div class="w-full flex flex-col sm:flex-row justify-between items-start sm:items-center text-xs mb-2 gap-1">
+            <span class="text-white font-bold flex items-center gap-1.5 text-sm">
+              <i data-lucide="box" class="w-4 h-4 text-[#C4455C]"></i>
+              Interaktywny Wykres 3D Powierzchni (3D Surface Plot)
+            </span>
+            <span class="text-[11px] font-mono text-cyan-300">Czerwona płaszczyzna: Płaszczyzna styczna \(\nabla f\)</span>
+          </div>
+
+          <div class="stat-chart-card w-full p-1 flex justify-center relative group">
+            <canvas id="landscape-canvas" class="w-full h-80 sm:h-96 block cursor-grab active:cursor-grabbing"></canvas>
+            <div class="absolute top-3 left-3 bg-[#1B1D3A]/85 backdrop-blur-md px-2.5 py-1 rounded-md text-[10px] text-[#DFEFF6] border border-[#4043A0] pointer-events-none font-mono">
+              3D View: Yaw &bull; Pitch
+            </div>
+          </div>
+
+          <div class="w-full flex justify-between text-[11px] text-[#DFEFF6]/70 font-mono mt-2 px-3">
+            <span>Osie 3D: pH (X) &bull; Temperatura (Y) &bull; Żywotność (Z)</span>
+            <span class="text-[#C4455C] font-semibold">Obracaj wykres 3D myszką lub dotykiem!</span>
+          </div>
+        </div>
+
+        <!-- PRAWA: KONSOLA STEROWANIA I STATUS WSPINACZKI -->
+        <div class="lg:col-span-5 flex flex-col justify-between space-y-4">
+          <div class="bg-[#1B1D3A] p-4 rounded-2xl border border-[#4043A0] space-y-3 shadow-inner">
+            <div class="flex items-center justify-between">
+              <span class="text-xs font-bold uppercase text-cyan-300 tracking-wider">Stan Optymalizacji Gradientowej</span>
+              <span id="opt-status" class="badge-tech bg-[#4043A0] text-[#DFEFF6] border border-[#4043A0]">Oczekiwanie</span>
+            </div>
+
+            <!-- Konsola telemetrii gradientu -->
+            <div id="algo-telemetry" class="bg-[#14162e] p-3.5 rounded-xl border border-[#4043A0] font-mono text-xs space-y-1.5">
+              <div class="text-[#DFEFF6]/80 flex justify-between">
+                <span>Krok optymalizacji:</span>
+                <span id="telemetry-step" class="text-white font-bold">0 / 15</span>
+              </div>
+              <div class="text-[#DFEFF6]/80 flex justify-between">
+                <span>Wektor gradientu \(\nabla f\):</span>
+                <span id="telemetry-grad" class="text-cyan-300 font-bold">Gotowy do startu</span>
+              </div>
+              <div class="text-[#DFEFF6]/80 flex justify-between">
+                <span>Wysokość na zboczu 3D:</span>
+                <span id="telemetry-viab" class="text-emerald-400 font-bold">-- %</span>
+              </div>
+            </div>
+
+            <!-- Wyjaśnienie dlaczego gradient dąży do zera -->
+            <div class="p-2.5 rounded-lg bg-[#282C55]/60 border border-[#4043A0]/60 text-[11px] text-[#DFEFF6]/80 leading-relaxed font-sans">
+              <strong class="text-white">Dlaczego gradient na szczycie wynosi [0, 0, 0]?</strong><br>
+              Wektor gradientu \(\nabla f\) mierzy <em>nachylenie zbocza</em>. Na samym wierzchołku góry grunt staje się poziomy (\(\nabla f = \mathbf{0}\)). Wektor <strong>wynikowych optymalnych parametrów</strong> to:
+              <span class="text-emerald-400 font-mono font-bold block mt-0.5">[T = 37.0°C, pH = 7.20, G = 4.5 g/L]</span>
+            </div>
+
+            <!-- Wyliczone nastawy -->
+            <div class="grid grid-cols-3 gap-2 text-center text-xs font-mono">
+              <div class="bg-[#14162e] p-2 rounded-lg border border-[#4043A0]">
+                <span class="text-[10px] text-[#DFEFF6]/60 block font-sans">T optymalne</span>
+                <span id="opt-res-t" class="text-orange-400 font-bold text-sm">--</span>
+              </div>
+              <div class="bg-[#14162e] p-2 rounded-lg border border-[#4043A0]">
+                <span class="text-[10px] text-[#DFEFF6]/60 block font-sans">pH optymalne</span>
+                <span id="opt-res-ph" class="text-purple-300 font-bold text-sm">--</span>
+              </div>
+              <div class="bg-[#14162e] p-2 rounded-lg border border-[#4043A0]">
+                <span class="text-[10px] text-[#DFEFF6]/60 block font-sans">Glukoza opt.</span>
+                <span id="opt-res-g" class="text-emerald-400 font-bold text-sm">--</span>
+              </div>
+            </div>
+
+            <!-- Przycisk Uruchomienia Wspinaczki Gradientowej -->
+            <button id="btn-run-optimizer" class="btn-coral w-full py-3 px-4 rounded-xl font-extrabold text-sm shadow-xl transition-all flex items-center justify-center gap-2">
+              <i data-lucide="play" class="w-4 h-4 fill-current"></i>
+              <span>Uruchom Wspinaczkę Gradientową</span>
+            </button>
+          </div>
+
+          <!-- Przycisk powrotu do bioreaktora z sukcesem -->
+          <button id="btn-apply-optimal" disabled class="w-full py-3.5 px-4 rounded-xl bg-emerald-600 disabled:bg-[#282C55] disabled:text-[#DFEFF6]/40 disabled:cursor-not-allowed hover:bg-emerald-500 text-white font-extrabold text-sm shadow-xl transition-all flex items-center justify-center gap-2">
+            <i data-lucide="check-circle-2" class="w-4 h-4"></i>
+            <span>Zastosuj Wyliczone Optimum w Bioreaktorze! &rarr;</span>
+          </button>
+        </div>
+
+      </div>
+
+      <!-- TABELA SZCZEGÓŁOWYCH WYLICZEŃ KROK PO KROKU -->
+      <div class="glass-panel p-5 sm:p-6 space-y-4 border-[#4043A0]">
+        <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
+          <div>
+            <h4 class="text-base font-bold text-white flex items-center gap-2">
+              <i data-lucide="calculator" class="w-5 h-5 text-emerald-400"></i>
+              Szczegółowe Wyliczenia Matematyczne Krok po Kroku (Gradient Ascent)
+            </h4>
+            <p class="text-xs text-[#DFEFF6]/70 mt-0.5">
+              Poniżej na żywo rejestrowane są dokładne wartości pochodnych cząstkowych, normy gradientu oraz wektora przesunięcia dla każdego kroku wspinaczki.
+            </p>
+          </div>
+          <div class="text-xs font-mono px-3 py-1.5 rounded-lg bg-[#1B1D3A] border border-[#4043A0] text-cyan-300 shrink-0">
+            \(\mathbf{x}_{k+1} = \mathbf{x}_k + \gamma \cdot \nabla f\)
+          </div>
+        </div>
+
+        <div class="overflow-x-auto">
+          <table class="w-full text-xs text-left border-collapse">
+            <thead>
+              <tr class="border-b border-[#4043A0] text-[#DFEFF6]/70 uppercase font-mono bg-[#1B1D3A]/80">
+                <th class="py-2.5 px-3">Krok \(k\)</th>
+                <th class="py-2.5 px-3">Punkt \(\mathbf{x}_k = (T, \text{pH}, G)\)</th>
+                <th class="py-2.5 px-3">Żywotność \(f(\mathbf{x}_k)\)</th>
+                <th class="py-2.5 px-3">Pochodne \([\frac{\partial f}{\partial T}, \frac{\partial f}{\partial \text{pH}}, \frac{\partial f}{\partial G}]\)</th>
+                <th class="py-2.5 px-3">Norma \(\|\nabla f\|\)</th>
+                <th class="py-2.5 px-3">Przesunięcie \(\Delta \mathbf{x}\)</th>
+                <th class="py-2.5 px-3">Stan zbocza</th>
+              </tr>
+            </thead>
+            <tbody id="calc-steps-body" class="divide-y divide-[#4043A0]/40 font-mono">
+              <tr id="calc-empty-row">
+                <td colspan="7" class="py-5 text-center text-[#DFEFF6]/50 italic font-sans">
+                  Kliknij <strong>"Uruchom Wspinaczkę Gradientową"</strong> powyżej, aby zobaczyć rejestrację pełnych wyliczeń matematycznych krok po kroku!
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FOOTER -->
+  <footer class="border-t border-[#4043A0] py-6 text-center text-xs text-[#DFEFF6]/60 max-w-6xl mx-auto w-full px-4">
+    <p>Projekt przygotowany dla <strong>SKN Biologów Cyfrowych Uniwersytetu Łódzkiego</strong></p>
+    <p class="mt-1 text-[11px] text-[#DFEFF6]/40">Kierunek: Biologia i Biomedycyna Cyfrowa UŁ</p>
+  </footer>
+
+  <!-- MODAL SUKCESU -->
+  <div id="modal-success" class="fixed inset-0 z-50 bg-[#14162e]/85 backdrop-blur-md hidden items-center justify-center p-4">
+    <div class="glass-panel max-w-md w-full p-6 text-center space-y-4 border-emerald-500/60 shadow-2xl">
+      <div class="w-16 h-16 rounded-full bg-emerald-500/20 text-emerald-400 flex items-center justify-center mx-auto">
+        <i data-lucide="award" class="w-9 h-9"></i>
+      </div>
+      <h3 id="modal-title" class="text-2xl font-extrabold text-white">Triumf Biologii Cyfrowej i Doświadczalnej!</h3>
+      <p id="modal-desc" class="text-xs text-[#DFEFF6]/90 leading-relaxed">
+        Po wyliczeniu optimum przez algorytm gradientowy i zweryfikowaniu próby błękitem trypanu w laboratorium uzyskałeś
+        <span class="text-emerald-400 font-bold text-sm" id="modal-viability">98.2%</span> żywotności 
+        i maksymalną wydajność bioreaktora!
+      </p>
+
+      <div class="bg-[#1B1D3A] p-3.5 rounded-xl border border-[#4043A0] text-xs text-left space-y-1.5 font-mono">
+        <div class="flex justify-between">
+          <span class="text-[#DFEFF6]/70 font-sans">Integralność błon komórkowych:</span>
+          <span class="text-emerald-400 font-bold font-sans">✓ Prawie 100% szczelne</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#DFEFF6]/70 font-sans">Gęstość komórek żywych (VCD):</span>
+          <span class="text-cyan-300 font-bold">~8.5 mln/mL</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#DFEFF6]/70 font-sans">Oszczędzony czas w laboratorium:</span>
+          <span class="text-emerald-400 font-bold">~4 tygodnie</span>
+        </div>
+        <div class="flex justify-between">
+          <span class="text-[#DFEFF6]/70 font-sans">Oszczędzony budżet odczynników:</span>
+          <span class="text-amber-300 font-bold">~15 000 – 40 000 PLN</span>
+        </div>
+      </div>
+
+      <div class="pt-2 flex flex-col gap-2">
+        <button id="modal-close" class="btn-coral w-full py-2.5 rounded-xl text-white font-bold text-xs transition">
+          Wspaniale! Kontynuuj eksplorację
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- APPLICATION LOGIC -->
+  <script type="module" src="js/app.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      lucide.createIcons();
+    });
+  </script>
+</body>
+</html>

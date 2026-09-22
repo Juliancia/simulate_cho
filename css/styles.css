@@ -1,0 +1,262 @@
+/* styles.css - Styl dopasowany do SKN Biologów Cyfrowych (Uniwersytet Łódzki)
+ * Repozytorium źródłowe stylu: https://github.com/biologiacyfrowa/website_BC
+ * Kolory: #1B1D3A (główny granat), #4043A0 (indygo/fiolet), #DFEFF6 (lodowy błękit tekstu), #C4455C (karmin/koral)
+ * Czcionki: "Gochi Hand" (logo/nagłówki), "Sriracha" (akcenty/tekst)
+ */
+
+@import url('https://fonts.googleapis.com/css2?family=Gochi+Hand&family=Sriracha&family=Plus+Jakarta+Sans:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;700&display=swap');
+
+:root {
+  --bg-main: #1B1D3A;
+  --bg-card: rgba(40, 44, 85, 0.7);
+  --border-card: rgba(64, 67, 160, 0.5);
+  --accent-purple: #4043A0;
+  --accent-coral: #C4455C;
+  --text-ice: #DFEFF6;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', 'Sriracha', sans-serif;
+  background-color: var(--bg-main);
+  color: var(--text-ice);
+  overflow-x: hidden;
+  background-image: 
+    radial-gradient(circle at 15% 15%, rgba(64, 67, 160, 0.25) 0%, transparent 45%),
+    radial-gradient(circle at 85% 85%, rgba(196, 69, 92, 0.15) 0%, transparent 45%),
+    radial-gradient(circle at 50% 50%, rgba(27, 29, 58, 0.8) 0%, transparent 70%);
+  min-height: 100vh;
+}
+
+/* Czcionka logo i nagłówków z oficjalnej strony koła */
+.font-gochi {
+  font-family: 'Gochi Hand', cursive, sans-serif;
+}
+
+.font-sriracha {
+  font-family: 'Sriracha', cursive, sans-serif;
+}
+
+.font-mono {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Karty w stylu strony koła */
+.glass-panel {
+  background: var(--bg-card);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid var(--border-card);
+  border-radius: 1.25rem;
+  box-shadow: 0 12px 32px -8px rgba(10, 11, 26, 0.7);
+  transition: border-color 0.2s ease, transform 0.2s ease;
+}
+
+.glass-panel:hover {
+  border-color: rgba(196, 69, 92, 0.45);
+}
+
+/* Karta wykresu statystycznego (czyste, jasne tło) */
+.stat-chart-card {
+  background: #ffffff;
+  border-radius: 1rem;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.25);
+  border: 1px solid #cbd5e1;
+  overflow: hidden;
+}
+
+/* Nawigacja w stylu strony koła */
+nav.bc-nav {
+  background-color: var(--accent-purple);
+}
+
+.bc-logo {
+  font-family: 'Gochi Hand', cursive, sans-serif;
+  font-size: 26px;
+  color: var(--text-ice);
+  letter-spacing: 0.5px;
+}
+
+/* Przyciski w barwach koła */
+.btn-coral {
+  background-color: var(--accent-coral);
+  color: #ffffff;
+  transition: all 0.25s ease;
+}
+
+.btn-coral:hover {
+  background-color: #d85269;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(196, 69, 92, 0.4);
+}
+
+.btn-purple {
+  background-color: var(--accent-purple);
+  color: var(--text-ice);
+  transition: all 0.25s ease;
+}
+
+.btn-purple:hover {
+  background-color: #4f53c2;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(64, 67, 160, 0.4);
+}
+
+/* Mikroskop */
+.microscope-wrapper {
+  position: relative;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  padding: 12px;
+  max-width: 100%;
+  box-sizing: border-box;
+  background: radial-gradient(circle, #25284d 0%, #171933 70%, #0d0e1d 100%);
+  border-radius: 9999px;
+  box-shadow: 
+    0 15px 35px -5px rgba(0, 0, 0, 0.8),
+    inset 0 2px 4px rgba(255, 255, 255, 0.1),
+    inset 0 -4px 8px rgba(0, 0, 0, 0.6);
+  border: 2px solid rgba(64, 67, 160, 0.6);
+}
+
+/* Responsywny układ kolumn: na mobile rozbicie do płaskiego grida dla kolejności: Bioreaktor -> Mikroskop -> Wyniki, a na desktopie kolumna boczna */
+@media (max-width: 1023px) {
+  .mobile-contents {
+    display: contents !important;
+  }
+}
+
+@media (min-width: 1024px) {
+  .desktop-right-col {
+    display: flex !important;
+    flex-direction: column !important;
+  }
+}
+
+#microscope-canvas {
+  border-radius: 9999px;
+  display: block;
+  cursor: crosshair;
+}
+
+/* Custom Range Sliders w kolorach koła */
+input[type=range] {
+  -webkit-appearance: none;
+  width: 100%;
+  background: transparent;
+}
+
+input[type=range]:focus {
+  outline: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+  width: 100%;
+  height: 8px;
+  cursor: pointer;
+  background: #14162e;
+  border-radius: 9999px;
+  border: 1px solid rgba(64, 67, 160, 0.5);
+}
+
+input[type=range]::-webkit-slider-thumb {
+  height: 22px;
+  width: 22px;
+  border-radius: 50%;
+  background: var(--accent-coral);
+  cursor: pointer;
+  -webkit-appearance: none;
+  margin-top: -7px;
+  box-shadow: 0 0 10px rgba(196, 69, 92, 0.7), 0 2px 4px rgba(0,0,0,0.5);
+  border: 2px solid #ffffff;
+  transition: transform 0.15s ease, background-color 0.15s ease;
+}
+
+input[type=range]:active::-webkit-slider-thumb {
+  transform: scale(1.2);
+}
+
+.slider-temp::-webkit-slider-thumb {
+  background: #f97316 !important;
+  box-shadow: 0 0 10px rgba(249, 115, 22, 0.7) !important;
+}
+
+.slider-ph::-webkit-slider-thumb {
+  background: #818cf8 !important;
+  box-shadow: 0 0 10px rgba(129, 140, 248, 0.7) !important;
+}
+
+.slider-glucose::-webkit-slider-thumb {
+  background: #10b981 !important;
+  box-shadow: 0 0 10px rgba(16, 185, 129, 0.7) !important;
+}
+
+/* Badges */
+.badge-tech {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+  padding: 0.2rem 0.65rem;
+  border-radius: 9999px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #14162e;
+}
+::-webkit-scrollbar-thumb {
+  background: #4043A0;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #C4455C;
+}
+
+/* Confetti canvas */
+#confetti-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 99999;
+}
+
+/* KaTeX Dark Theme Adjustments */
+.katex {
+  color: #DFEFF6 !important;
+}
+
+.katex-display {
+  margin: 0.5em 0 !important;
+  overflow-x: auto;
+  overflow-y: hidden;
+  padding: 4px 0;
+}
+
+.katex .mord.mathnormal {
+  color: #a5b4fc;
+}
+
+.katex .mord.text {
+  color: #86efac;
+}
+
+/* 3D Landscape Canvas touch & cursor optimization */
+#landscape-canvas {
+  touch-action: none;
+  cursor: grab;
+}
+
+#landscape-canvas:active {
+  cursor: grabbing;
+}
