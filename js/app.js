@@ -117,7 +117,6 @@ class AppController {
     this.dom.tabNavML.addEventListener('click', () => this.switchView('ml'));
     this.dom.btnJumpML.addEventListener('click', () => this.switchView('ml'));
     this.dom.btnBackToLab.addEventListener('click', () => this.switchView('lab'));
-    document.getElementById('logo-home')?.addEventListener('click', () => this.switchView('lab'));
 
     // 2. Zmiany wartości suwaków (zapisywane na urządzeniu)
     this.dom.sliderTemp.addEventListener('input', (e) => {

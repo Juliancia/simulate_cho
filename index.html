@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Symulator Hodowli Komórek CHO & Optymalizacja | SKN Biologów Cyfrowych UŁ</title>
   <meta name="description" content="Symulator hodowli komórek ssaczych CHO z testem błękitem trypanu oraz optymalizacją bioprocesu dla SKN Biologów Cyfrowych Uniwersytetu Łódzkiego.">
+  <link rel="icon" type="image/jpeg" href="logoBCfull_white.jpg">
   
   <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
@@ -51,12 +52,12 @@
     <div class="max-w-6xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-3">
       
       <!-- Logo koła w czcionce Gochi Hand (zgodnie z repozytorium website_BC) -->
-      <div class="flex items-center gap-3.5 w-full sm:w-auto justify-center sm:justify-start text-center sm:text-left">
-        <a href="https://github.com/biologiacyfrowa" target="_blank" rel="noopener noreferrer" class="shrink-0 group block" title="SKN Biologów Cyfrowych UŁ">
-          <img src="assets/img/logo_bc_icon.jpg" alt="Logo SKN Biologów Cyfrowych" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl shadow-md border-2 border-[#DFEFF6]/30 group-hover:border-[#C4455C] group-hover:scale-105 transition-all object-cover">
-        </a>
+      <a href="https://biologiacyfrowa.github.io/website_BC/" target="_blank" rel="noopener noreferrer" class="flex items-center gap-3.5 w-full sm:w-auto justify-center sm:justify-start text-center sm:text-left group cursor-pointer" title="Oficjalna strona SKN Biologów Cyfrowych">
+        <div class="shrink-0">
+          <img src="logoBCfull_white.jpg" alt="Logo SKN Biologów Cyfrowych" class="w-10 h-10 sm:w-11 sm:h-11 rounded-xl shadow-md border-2 border-[#DFEFF6]/30 group-hover:border-[#C4455C] group-hover:scale-105 transition-all object-contain bg-white p-0.5">
+        </div>
         <div>
-          <div class="bc-logo font-gochi leading-none text-2xl sm:text-3xl text-[#DFEFF6] hover:text-[#C4455C] transition-colors cursor-pointer" id="logo-home">
+          <div class="bc-logo font-gochi leading-none text-2xl sm:text-3xl text-[#DFEFF6] group-hover:text-[#C4455C] transition-colors" id="logo-home">
             skn biologów cyfrowych
           </div>
           <p class="text-[11px] text-[#DFEFF6]/80 flex items-center justify-center sm:justify-start gap-1.5 mt-0.5 font-sans">
@@ -64,7 +65,7 @@
             Koło Naukowe Uniwersytetu Łódzkiego
           </p>
         </div>
-      </div>
+      </a>
 
       <!-- ZAKŁADKI NAWIGACJI -->
       <div class="flex items-center justify-center w-full sm:w-auto">
@@ -819,8 +820,10 @@
 
   <!-- FOOTER -->
   <footer class="border-t border-[#4043A0] py-6 text-center text-xs sm:text-sm text-[#DFEFF6]/70 max-w-6xl mx-auto w-full px-4 flex flex-col items-center gap-2.5">
-    <img src="assets/img/logo_bc_icon.jpg" alt="SKN Biologów Cyfrowych" class="w-9 h-9 rounded-xl border border-[#4043A0] opacity-85 hover:opacity-100 transition-opacity">
-    <p>Projekt przygotowany dla <strong>SKN Biologów Cyfrowych Uniwersytetu Łódzkiego</strong></p>
+    <a href="https://biologiacyfrowa.github.io/website_BC/" target="_blank" rel="noopener noreferrer" class="group block" title="Oficjalna strona SKN Biologów Cyfrowych">
+      <img src="logoBCfull_white.jpg" alt="SKN Biologów Cyfrowych" class="w-9 h-9 rounded-xl border border-white/20 bg-white p-0.5 shadow-sm opacity-90 group-hover:opacity-100 group-hover:scale-105 transition-all object-contain">
+    </a>
+    <p>Projekt przygotowany dla <a href="https://biologiacyfrowa.github.io/website_BC/" target="_blank" rel="noopener noreferrer" class="font-bold underline hover:text-[#C4455C] transition-colors">SKN Biologów Cyfrowych Uniwersytetu Łódzkiego</a></p>
     <p class="text-xs text-[#DFEFF6]/50">Kierunek: Biologia i Biomedycyna Cyfrowa UŁ</p>
   </footer>
 
